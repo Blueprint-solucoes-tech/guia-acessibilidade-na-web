@@ -2,6 +2,8 @@
 import DefaultLayout from '~/layouts/DefaultLayout.astro'
 import PageHeader from '~/components/ui/PageHeader.astro'
 import Heading from '~/components/core/Heading.astro'
+import Link from '~/components/core/Link.astro'
+import Icon from 'node_modules/astro-icon/components/Icon.astro'
 ---
 
 <DefaultLayout title="Declaração de Acessibilidade">
@@ -56,6 +58,16 @@ import Heading from '~/components/core/Heading.astro'
         Valorizamos o feedback dos usuários sobre a acessibilidade deste site. Caso você encontre alguma barreira ou
         tenha sugestões de melhoria, pedimos que, se possível, informe:
       </p>
+      <Link
+          href="https://github.com/Gabrielbsb21/guia-acessibilidade-na-web/issues"
+          isButton
+          type="primary"
+          animateOnHover
+          animationType="boop"
+        >
+          <Icon aria-hidden="true" name="lucide:headset" size=" 1.5rem" />
+          Problemas? abre uma issue no GitHub
+        </Link>
     </div>
   </section>
 </DefaultLayout>

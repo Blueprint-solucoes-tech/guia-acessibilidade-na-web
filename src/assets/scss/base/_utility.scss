@@ -1,3 +1,4 @@
+@use 'sass:map';
 @use 'breakpoint' as *;
 
 .container {
@@ -183,8 +184,8 @@ $font-map: (
 
 @each $size, $value in $font-map {
   .font-#{$size} {
-    font-size: map-get($value, font-size);
-    line-height: map-get($value, line-height);
+    font-size: map.get($value, font-size);
+    line-height: map.get($value, line-height);
   }
 }
 
