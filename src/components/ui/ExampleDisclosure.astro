@@ -1,0 +1,157 @@
+---
+import Heading from '~/components/core/Heading.astro'
+
+interface Props {
+  class?: string
+  title: string
+  summary?: string
+  open?: boolean
+  label?: string
+}
+
+const {
+  class: className,
+  title,
+  summary,
+  open = false,
+  label = 'Mostrar exemplo prático',
+} = Astro.props
+
+const hasNotes = Astro.slots.has('notes')
+---
+
+<details class:list={['example-disclosure', className]} {...open ? { open } : {}}>
+  <summary class="trigger">
+    <span class="eyebrow">{label}</span>
+    <Heading level="h3" size="h5">{title}</Heading>
+    {summary && <p>{summary}</p>}
+    <span class="indicator" aria-hidden="true">
+      <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M1.25 1.25L7 6.75l5.75-5.5"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </span>
+  </summary>
+
+  <div class="panel">
+    <div class="example-surface">
+      <slot />
+    </div>
+
+    {hasNotes && (
+      <div class="notes">
+        <slot name="notes" />
+      </div>
+    )}
+  </div>
+</details>
+
+<style>
+  :where(.example-disclosure) {
+    --example-card-bg: light-dark(hsl(210 33% 98%), hsl(215 28% 11%));
+    --example-card-header-bg: light-dark(hsl(180 45% 96%), hsl(215 30% 14%));
+    --example-card-surface-bg: light-dark(hsl(0 0% 100%), hsl(215 24% 16%));
+    --example-card-text: light-dark(hsl(215 30% 16%), hsl(0 0% 96%));
+    --example-card-muted: light-dark(hsl(215 14% 32%), hsl(215 12% 78%));
+    --example-card-border: light-dark(hsl(210 20% 82%), hsl(215 16% 28%));
+
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-md);
+    background: var(--example-card-bg);
+    color: var(--example-card-text);
+    box-shadow: var(--elevation-2);
+    overflow: clip;
+  }
+
+  :where(.trigger) {
+    display: grid;
+    gap: var(--space-3xs);
+    position: relative;
+    cursor: pointer;
+    list-style: none;
+    background: var(--example-card-header-bg);
+    padding: var(--space-m);
+  }
+
+  :where(.trigger)::marker,
+  :where(.trigger)::-webkit-details-marker {
+    display: none;
+  }
+
+  :where(.trigger:hover .heading),
+  :where(.trigger:focus-visible .heading) {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  :where(.trigger:focus-visible) {
+    outline: 3px solid currentColor;
+    outline-offset: -3px;
+  }
+
+  :where(.eyebrow) {
+    color: var(--link-color);
+    font-size: var(--font-size--1);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  :where(.trigger p) {
+    max-inline-size: 70ch;
+    margin: 0;
+    color: var(--example-card-muted);
+  }
+
+  :where(.indicator) {
+    display: inline-flex;
+    position: absolute;
+    inset-block-start: var(--space-m);
+    inset-inline-end: var(--space-m);
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--example-card-border);
+    border-radius: 999px;
+    inline-size: 2rem;
+    block-size: 2rem;
+  }
+
+  :where(.panel) {
+    display: grid;
+    gap: var(--space-m);
+    border-block-start: 1px solid var(--example-card-border);
+    padding: var(--space-m);
+  }
+
+  :where(.example-surface) {
+    border: 1px solid var(--example-card-border);
+    border-radius: var(--radius-s);
+    background: var(--example-card-surface-bg);
+    padding: var(--space-m);
+  }
+
+  :where(.notes) {
+    color: var(--example-card-muted);
+    font-size: var(--font-size-0);
+    line-height: 1.6;
+  }
+
+  :where(.notes p) {
+    margin: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :where(.indicator svg) {
+      transition: transform 0.2s ease;
+    }
+  }
+
+  :where(.example-disclosure[open] .indicator svg) {
+    transform: rotate(180deg);
+  }
+</style>

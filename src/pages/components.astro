@@ -1,0 +1,680 @@
+---
+import DefaultLayout from '~/layouts/DefaultLayout.astro'
+import Breadcrumbs from '~/components/core/Breadcrumbs/Breadcrumbs.astro'
+import BreadcrumbsItem from '~/components/core/Breadcrumbs/BreadcrumbsItem.astro'
+import Heading from '~/components/core/Heading.astro'
+import Accordion from '~/components/core/Accordion/Accordion.astro'
+import AccordionItem from '~/components/core/Accordion/AccordionItem.astro'
+import Link from '~/components/core/Link.astro'
+import Media from '~/components/core/Media.astro'
+import ExampleDisclosure from '~/components/ui/ExampleDisclosure.astro'
+
+const componentSections = [
+  { id: 'accordion', label: 'Accordion' },
+  { id: 'avatar', label: 'Avatar' },
+  { id: 'badge', label: 'Badge' },
+  { id: 'breadcrumbs', label: 'Breadcrumbs' },
+  { id: 'button', label: 'Button' },
+  { id: 'card', label: 'Card' },
+  { id: 'dark-mode-toggle', label: 'Dark mode toggle' },
+  { id: 'form', label: 'Form' },
+  { id: 'heading', label: 'Heading' },
+  { id: 'high-contrast-toggle', label: 'High contrast toggle' },
+  { id: 'link', label: 'Link' },
+  { id: 'media', label: 'Media' },
+]
+
+const prioritizedSections = new Set(['accordion', 'button', 'link', 'heading', 'breadcrumbs', 'media', 'form'])
+---
+
+<DefaultLayout title="Componentes Acessíveis">
+  <section class="components-header">
+    <div class="container">
+      <div class="header-breadcrumbs">
+        <Breadcrumbs ariaLabel="Caminho da página de componentes">
+          <BreadcrumbsItem href="/" label="Home" />
+          <BreadcrumbsItem currentPage label="Accessible Components" />
+        </Breadcrumbs>
+      </div>
+      <div class="header-content space-content">
+        <Heading level="h1">Accessible components</Heading>
+        <p>
+          Esta página reúne componentes acessíveis para acelerar o desenvolvimento com HTML semântico, navegação por
+          teclado e foco visível. Use os exemplos como base para montar interfaces inclusivas no seu projeto.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="components-content">
+    <div class="container content-grid">
+      <div class="main-content">
+        <section id="accordion" class="component-block space-content">
+          <Heading level="h2">Accordion</Heading>
+          <p>
+            O Accordion ajuda a organizar conteúdo extenso em blocos compactos sem perder contexto para leitores de
+            tela e usuários de teclado.
+          </p>
+          <div class="component-guidance">
+            <p class="guidance-title">Boas práticas</p>
+            <ul class="component-checklist" aria-label="Checklist de acessibilidade do accordion">
+              <li>Use um rótulo claro no gatilho de expansão.</li>
+              <li>Preserve a ordem de navegação por teclado.</li>
+              <li>Evite esconder conteúdo essencial sem contexto.</li>
+            </ul>
+          </div>
+
+          <ExampleDisclosure
+            open
+            title="Accordion padrão com item inicial aberto"
+            summary="Exemplo com múltiplas seções e suporte nativo para teclado usando o padrão do projeto."
+          >
+            <Accordion aria-label="Exemplo de accordion acessível">
+              <AccordionItem name="components-default" title="First Item" open>
+                <p>
+                  Este item começa expandido para apresentar o comportamento padrão do componente com estrutura
+                  semântica.
+                </p>
+              </AccordionItem>
+              <AccordionItem name="components-default" title="Second Item">
+                <p>Todos os itens podem ser acessados com teclado e oferecem estados visuais claros de foco e hover.</p>
+              </AccordionItem>
+              <AccordionItem name="components-default" title="Third Item">
+                <p>Use headings corretos e textos objetivos para facilitar leitura, navegação e escaneabilidade.</p>
+              </AccordionItem>
+              <AccordionItem name="components-default" title="Fourth Item">
+                <p>Combine o Accordion com landmarks e links internos quando a página tiver muitos exemplos.</p>
+              </AccordionItem>
+            </Accordion>
+
+            <Fragment slot="notes">
+              <p>
+                Prefira usar <code>details</code> e <code>summary</code> quando o padrão atender sua necessidade. Isso
+                reduz JavaScript e já fornece estados expandidos/recolhidos com boa semântica.
+              </p>
+            </Fragment>
+          </ExampleDisclosure>
+        </section>
+
+        <section id="button" class="component-block space-content">
+          <Heading level="h2">Button</Heading>
+          <p>
+            Botões devem comunicar ação imediata, manter foco visível e usar o elemento nativo correto para evitar
+            comportamento inesperado em teclado e leitores de tela.
+          </p>
+          <div class="component-guidance">
+            <p class="guidance-title">Boas práticas</p>
+            <ul class="component-checklist" aria-label="Checklist de acessibilidade do botão">
+              <li>Use <code>&lt;button&gt;</code> para ações e <code>&lt;a&gt;</code> apenas para navegação.</li>
+              <li>Garanta estado de foco visível e alvo clicável confortável.</li>
+              <li>O texto do botão deve indicar claramente o resultado da ação.</li>
+            </ul>
+          </div>
+
+          <ExampleDisclosure
+            title="Ações primária, secundária e destrutiva"
+            summary="Um conjunto simples de botões nativos com rótulos claros e hierarquia visual."
+          >
+            <div class="button-showcase">
+              <p class="demo-caption">Exemplo de barra de ações em uma tela de edição.</p>
+              <div class="sample-actions" role="group" aria-label="Ações de exemplo">
+                <button type="button" class="demo-button demo-button-primary">Salvar alterações</button>
+                <button type="button" class="demo-button demo-button-secondary">Salvar rascunho</button>
+                <button type="button" class="demo-button demo-button-danger">Excluir item</button>
+              </div>
+            </div>
+
+            <Fragment slot="notes">
+              <p>
+                Use o atributo `type="button"` quando o botão estiver fora de um envio de formulário. Isso evita
+                submissões acidentais.
+              </p>
+            </Fragment>
+          </ExampleDisclosure>
+        </section>
+
+        <section id="breadcrumbs" class="component-block space-content">
+          <Heading level="h2">Breadcrumbs</Heading>
+          <p>
+            Breadcrumbs ajudam a pessoa a entender onde está dentro da estrutura do site, principalmente em páginas
+            internas e hierarquias longas.
+          </p>
+          <div class="component-guidance">
+            <p class="guidance-title">Boas práticas</p>
+            <ul class="component-checklist" aria-label="Checklist de acessibilidade de breadcrumbs">
+              <li>Envolva o conjunto em <code>nav</code> com um <code>aria-label</code> descritivo.</li>
+              <li>Marque a página atual com <code>aria-current="page"</code>.</li>
+              <li>Mantenha a ordem e a nomenclatura coerentes com a navegação principal.</li>
+            </ul>
+          </div>
+
+          <ExampleDisclosure
+            title="Trilha de navegação para uma página interna"
+            summary="Exemplo com separadores visuais e indicação semântica da página atual."
+          >
+            <div class="breadcrumbs-demo">
+              <p class="demo-caption">Simulação de uma página interna da documentação.</p>
+              <div class="breadcrumbs-surface">
+                <p class="breadcrumbs-label">Você está aqui</p>
+                <Breadcrumbs ariaLabel="Caminho da documentação de componentes">
+                  <BreadcrumbsItem href="/" label="Home" />
+                  <BreadcrumbsItem href="/components" label="Componentes" />
+                  <BreadcrumbsItem currentPage label="Breadcrumbs" />
+                </Breadcrumbs>
+                <Heading level="h3" size="h5">Breadcrumbs acessíveis</Heading>
+                <p>O item atual aparece no final da trilha e ajuda a pessoa a entender exatamente onde está.</p>
+              </div>
+            </div>
+
+            <Fragment slot="notes">
+              <p>
+                Evite usar breadcrumbs como substituto do menu principal. Eles funcionam melhor como apoio de contexto.
+              </p>
+            </Fragment>
+          </ExampleDisclosure>
+        </section>
+
+        <section id="form" class="component-block space-content">
+          <Heading level="h2">Form</Heading>
+          <p>
+            Formulários acessíveis ficam mais fáceis de preencher quando cada campo tem um rótulo claro, os grupos são
+            organizados por assunto e a orientação aparece antes do erro.
+          </p>
+          <div class="component-guidance">
+            <p class="guidance-title">Boas práticas</p>
+            <ul class="component-checklist" aria-label="Checklist de acessibilidade de formulários">
+              <li>Associe cada campo a um <code>label</code> visível.</li>
+              <li>Use <code>fieldset</code> e <code>legend</code> para grupos relacionados.</li>
+              <li>Explique campos obrigatórios e formato esperado antes do erro.</li>
+            </ul>
+          </div>
+
+          <ExampleDisclosure
+            title="Formulário curto de inscrição"
+            summary="Campos nativos com ajuda contextual, estados focáveis e agrupamento semântico."
+          >
+            <form class="demo-form" action="#" method="post">
+              <div class="field">
+                <label for="component-name">Nome completo</label>
+                <input id="component-name" name="name" type="text" autocomplete="name" required />
+              </div>
+
+              <div class="field">
+                <label for="component-email">E-mail</label>
+                <input
+                  id="component-email"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                  aria-describedby="component-email-help"
+                  required
+                />
+                <p id="component-email-help" class="field-help">Usaremos seu e-mail apenas para responder seu contato.</p>
+              </div>
+
+              <fieldset class="field-group">
+                <legend>Preferência de contato</legend>
+                <label class="choice">
+                  <input type="radio" name="contact-preference" value="email" checked />
+                  <span>E-mail</span>
+                </label>
+                <label class="choice">
+                  <input type="radio" name="contact-preference" value="phone" />
+                  <span>Telefone</span>
+                </label>
+              </fieldset>
+
+              <div class="field">
+                <label for="component-message">Mensagem</label>
+                <textarea id="component-message" name="message" rows={4} />
+              </div>
+
+              <button type="submit" class="demo-button demo-button-primary">Enviar formulário</button>
+            </form>
+
+            <Fragment slot="notes">
+              <p>
+                O texto de ajuda precisa complementar o campo antes do envio. Quando houver erro, associe a mensagem ao
+                controle usando <code>aria-describedby</code>.
+              </p>
+            </Fragment>
+          </ExampleDisclosure>
+        </section>
+
+        <section id="heading" class="component-block space-content">
+          <Heading level="h2">Heading</Heading>
+          <p>
+            Títulos organizam a página para leitura visual e navegação assistiva. A hierarquia semântica importa mais
+            do que o tamanho visual isolado.
+          </p>
+          <div class="component-guidance">
+            <p class="guidance-title">Boas práticas</p>
+            <ul class="component-checklist" aria-label="Checklist de acessibilidade de headings">
+              <li>Não pule níveis sem motivo estrutural.</li>
+              <li>Use o heading para resumir a próxima seção.</li>
+              <li>Separar nível semântico de tamanho visual pode ser útil, mas com critério.</li>
+            </ul>
+          </div>
+
+          <ExampleDisclosure
+            title="Hierarquia com tamanhos visuais controlados"
+            summary="Exemplo mostrando como o componente permite manter semântica consistente e ajustar aparência."
+          >
+            <div class="heading-demo">
+              <Heading level="h2" size="h2">Guia de componentes acessíveis</Heading>
+              <p>Introdução da seção com uma visão geral curta antes de entrar em subtópicos.</p>
+
+              <Heading level="h3" size="h4">Estrutura semântica</Heading>
+              <p>Um subtítulo pode parecer menor visualmente sem perder seu papel na navegação do documento.</p>
+
+              <Heading level="h3" size="h5">Foco em escaneabilidade</Heading>
+              <p>Títulos curtos e objetivos ajudam tanto na leitura rápida quanto no uso de leitores de tela.</p>
+            </div>
+
+            <Fragment slot="notes">
+              <p>Evite usar heading apenas para estilizar texto. Se não for um título de seção, provavelmente não deve ser heading.</p>
+            </Fragment>
+          </ExampleDisclosure>
+        </section>
+
+        <section id="link" class="component-block space-content">
+          <Heading level="h2">Link</Heading>
+          <p>
+            Links precisam descrever o destino com clareza e manter distinção visual suficiente para quem navega por
+            leitura, teclado ou leitor de tela.
+          </p>
+          <div class="component-guidance">
+            <p class="guidance-title">Boas práticas</p>
+            <ul class="component-checklist" aria-label="Checklist de acessibilidade de links">
+              <li>Evite rótulos genéricos como “clique aqui”.</li>
+              <li>Identifique quando o link abre nova aba ou sai do contexto.</li>
+              <li>Não use link para disparar ações que deveriam ser botão.</li>
+            </ul>
+          </div>
+
+          <ExampleDisclosure
+            title="Links internos, externos e link com aparência de botão"
+            summary="Exemplo com diferentes intenções de navegação usando o componente existente do projeto."
+          >
+            <div class="link-demo">
+              <p>
+                Consulte a página de <Link href="/accessibility-statement">declaração de acessibilidade</Link> para
+                entender compromissos e limitações atuais do projeto.
+              </p>
+              <p>
+                Para aprofundar a referência técnica, veja a
+                <Link href="https://www.w3.org/WAI/" isExternal ariaLabel="W3C WAI, abre em uma nova aba">
+                  documentação da W3C WAI
+                </Link>.
+              </p>
+              <Link href="/contact" isButton type="primary" animateOnHover animationType="nudge">
+                Entrar em contato
+              </Link>
+            </div>
+
+            <Fragment slot="notes">
+              <p>
+                Quando um link externo abre nova aba, vale informar isso no rótulo acessível, principalmente se a ação
+                puder surpreender a pessoa.
+              </p>
+            </Fragment>
+          </ExampleDisclosure>
+        </section>
+
+        <section id="media" class="component-block space-content">
+          <Heading level="h2">Media</Heading>
+          <p>
+            Imagens e outras mídias devem preservar contexto. O texto alternativo precisa transmitir a função do
+            conteúdo, não repetir o que já está escrito ao lado.
+          </p>
+          <div class="component-guidance">
+            <p class="guidance-title">Boas práticas</p>
+            <ul class="component-checklist" aria-label="Checklist de acessibilidade de mídia">
+              <li>Use <code>alt</code> significativo para imagens informativas.</li>
+              <li>Deixe <code>alt=""</code> quando a imagem for puramente decorativa.</li>
+              <li>Controle proporção e corte para não comprometer conteúdo relevante.</li>
+            </ul>
+          </div>
+
+          <ExampleDisclosure
+            title="Imagem com proporção fixa e descrição objetiva"
+            summary="Exemplo usando o componente de mídia para manter apresentação consistente em cartões e seções editoriais."
+          >
+            <div class="media-demo">
+              <Media
+                src="/home/accessible-components.png"
+                alt="Captura ilustrativa da página de componentes acessíveis com blocos de conteúdo e destaque visual"
+                ratio="16:9"
+              />
+              <p>
+                O componente mantém a proporção visual e permite definir `alt`, `loading` e `decoding` sem duplicar a
+                estrutura do `<img>`.
+              </p>
+            </div>
+
+            <Fragment slot="notes">
+              <p>
+                Se a mesma informação já estiver completamente descrita em texto próximo, considere usar `alt=""` para
+                evitar redundância em leitores de tela.
+              </p>
+            </Fragment>
+          </ExampleDisclosure>
+        </section>
+
+        {componentSections
+          .filter((section) => !prioritizedSections.has(section.id))
+          .map((section) => (
+            <section id={section.id} class="component-block space-content">
+              <Heading level="h2">{section.label}</Heading>
+              <p>
+                Esta seção entra na próxima fase do guia. O objetivo é seguir o mesmo padrão clicável de exemplos,
+                checklist e recomendações práticas.
+              </p>
+            </section>
+          ))}
+      </div>
+
+      <aside class="toc" aria-labelledby="toc-title">
+        <div class="toc-wrapper">
+          <Heading id="toc-title" level="h2" size="h4">On this page</Heading>
+          <nav aria-label="Índice de componentes">
+            <ul>
+              {componentSections.map((item) => (
+                <li>
+                  <a href={`#${item.id}`}>{item.label}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+      </aside>
+    </div>
+  </section>
+</DefaultLayout>
+
+<style>
+  .components-header {
+    border-block: 1px solid var(--border-color-subtle);
+    padding-block: var(--space-xl);
+    background: linear-gradient(180deg, hsl(210deg 95% 4%) 0%, hsl(212deg 95% 5%) 100%);
+    color: hsl(0deg 0% 95%);
+  }
+
+  .darkmode .components-header {
+    background: linear-gradient(180deg, hsl(210deg 95% 4%) 0%, hsl(212deg 95% 5%) 100%);
+  }
+
+  .components-header .header-breadcrumbs {
+    margin-block-end: var(--space-xl);
+    color: hsl(0deg 0% 90%);
+  }
+
+  .components-header :global(a) {
+    color: hsl(177deg 82% 62%);
+  }
+
+  .components-header .header-content {
+    max-inline-size: 75ch;
+  }
+
+  .components-content {
+    padding-block: var(--space-3xl);
+  }
+
+  .content-grid {
+    display: grid;
+    gap: var(--space-2xl);
+  }
+
+  .main-content {
+    display: grid;
+    gap: var(--space-2xl);
+  }
+
+  .component-block {
+    scroll-margin-top: 7rem;
+    border-block-end: 1px solid var(--border-color-subtle);
+    padding-block-end: var(--space-2xl);
+  }
+
+  .component-block:last-child {
+    border-block-end: 0;
+    padding-block-end: 0;
+  }
+
+  .component-guidance {
+    border-inline-start: 4px solid var(--link-color);
+    background: light-dark(hsl(210 35% 97%), hsl(215 22% 12%));
+    border-radius: 0 var(--radius-s) var(--radius-s) 0;
+    padding: var(--space-s) var(--space-m);
+  }
+
+  .guidance-title {
+    margin: 0 0 var(--space-2xs);
+    color: var(--link-color);
+    font-size: var(--font-size--1);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .component-checklist {
+    display: grid;
+    gap: var(--space-3xs);
+    margin: 0;
+    padding-inline-start: 1.25rem;
+  }
+
+  .component-checklist li::marker {
+    color: var(--link-color);
+  }
+
+  .component-checklist code,
+  .component-block code,
+  .breadcrumbs-label {
+    font-family: var(--font-body);
+  }
+
+  .component-checklist code,
+  .component-block code {
+    border: 1px solid color-mix(in srgb, var(--link-color) 30%, transparent);
+    border-radius: var(--radius-xs);
+    background: light-dark(hsl(210 40% 96%), hsl(215 24% 18%));
+    padding: 0.1rem 0.35rem;
+    color: inherit;
+    font-size: 0.95em;
+  }
+
+  .toc {
+    border-inline-start: 1px solid var(--border-color-subtle);
+    padding-inline-start: var(--space-m);
+  }
+
+  .toc-wrapper {
+    position: sticky;
+    top: 1.5rem;
+  }
+
+  .toc ul {
+    display: grid;
+    gap: var(--space-xs);
+    margin: var(--space-s) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sample-actions,
+  .button-showcase,
+  .breadcrumbs-demo,
+  .link-demo,
+  .heading-demo,
+  .media-demo {
+    display: grid;
+    gap: var(--space-s);
+  }
+
+  .sample-actions {
+    grid-template-columns: repeat(auto-fit, minmax(12rem, max-content));
+    align-items: start;
+  }
+
+  .button-showcase,
+  .breadcrumbs-surface {
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-s);
+    background: light-dark(hsl(0 0% 100%), hsl(215 24% 18%));
+    padding: var(--space-m);
+  }
+
+  .demo-caption {
+    margin: 0;
+    color: light-dark(hsl(215 18% 30%), hsl(215 15% 78%));
+    font-size: var(--font-size--1);
+  }
+
+  .demo-button {
+    border: 2px solid transparent;
+    border-radius: var(--radius-s);
+    padding: 0.75rem 1rem;
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+
+  .demo-button:where(:hover, :focus-visible) {
+    text-decoration-color: currentColor;
+  }
+
+  .demo-button:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+  }
+
+  .demo-button-primary {
+    background: hsl(177deg 82% 62%);
+    color: hsl(214deg 85% 8%);
+  }
+
+  .demo-button-secondary {
+    border-color: var(--border-color-subtle);
+    background: transparent;
+    color: inherit;
+  }
+
+  .demo-button-danger {
+    background: hsl(7deg 70% 55%);
+    color: hsl(0deg 0% 100%);
+  }
+
+  .breadcrumbs-surface {
+    display: grid;
+    gap: var(--space-xs);
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--border-color-subtle);
+    background:
+      linear-gradient(180deg, light-dark(hsl(210 40% 98%), hsl(215 22% 16%)) 0 3rem, transparent 3rem),
+      light-dark(hsl(0 0% 100%), hsl(215 24% 18%));
+  }
+
+  .breadcrumbs-surface :global(.breadcrumbs) {
+    color: inherit;
+  }
+
+  .breadcrumbs-surface :global(.breadcrumbs ol) {
+    gap: 0.35rem;
+  }
+
+  .breadcrumbs-surface :global(.breadcrumbs a) {
+    color: var(--link-color);
+  }
+
+  .breadcrumbs-label {
+    margin: 0;
+    color: light-dark(hsl(215 18% 35%), hsl(215 12% 78%));
+    font-size: var(--font-size--1);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .demo-form {
+    display: grid;
+    gap: var(--space-s);
+    max-inline-size: 42rem;
+  }
+
+  .field,
+  .field-group {
+    display: grid;
+    gap: var(--space-3xs);
+  }
+
+  .field input,
+  .field textarea {
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-s);
+    background: var(--background-color);
+    padding: 0.75rem 0.85rem;
+    color: inherit;
+  }
+
+  .field input:focus-visible,
+  .field textarea:focus-visible,
+  .choice:focus-within {
+    outline: 3px solid var(--link-color);
+    outline-offset: 2px;
+  }
+
+  .field-help {
+    margin: 0;
+    color: color-mix(in srgb, currentColor 70%, transparent);
+    font-size: var(--font-size--1);
+  }
+
+  .field-group {
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-s);
+    padding: var(--space-s);
+  }
+
+  .field-group legend {
+    padding-inline: 0.3rem;
+    font-weight: 600;
+  }
+
+  .choice {
+    display: inline-flex;
+    gap: 0.5rem;
+    align-items: center;
+    border-radius: var(--radius-s);
+    padding: 0.25rem 0.35rem;
+    inline-size: fit-content;
+  }
+
+  .choice input {
+    accent-color: var(--link-color);
+  }
+
+  .media-demo :global(.media-wrapper) {
+    max-inline-size: 42rem;
+  }
+
+  @media (width >= 64rem) {
+    .content-grid {
+      grid-template-columns: minmax(0, 1fr) 18rem;
+      align-items: start;
+    }
+  }
+
+  @media (width < 64rem) {
+    .toc {
+      border-inline-start: 0;
+      border-block-start: 1px solid var(--border-color-subtle);
+      padding-inline-start: 0;
+      padding-block-start: var(--space-l);
+    }
+  }
+</style>

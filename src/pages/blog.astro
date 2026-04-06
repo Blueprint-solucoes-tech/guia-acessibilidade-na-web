@@ -1,0 +1,132 @@
+---
+import DefaultLayout from '~/layouts/DefaultLayout.astro'
+import Breadcrumbs from '~/components/core/Breadcrumbs/Breadcrumbs.astro'
+import BreadcrumbsItem from '~/components/core/Breadcrumbs/BreadcrumbsItem.astro'
+import Heading from '~/components/core/Heading.astro'
+
+const posts = Array.from({ length: 30 }, (_, index) => ({
+  id: index + 1,
+  titulo: `Boas práticas de acessibilidade #${index + 1}`,
+  resumo:
+    'Aprenda como estruturar componentes acessíveis com foco em semântica, navegação por teclado, estados de foco visíveis e contraste adequado.',
+  autorId: (index % 5) + 1,
+}))
+
+const postsExibidos = posts.slice(0, 6)
+---
+
+<DefaultLayout title="Blog">
+  <section class="blog-header">
+    <div class="container">
+      <div class="header-breadcrumbs">
+        <Breadcrumbs ariaLabel="Caminho da página de blog">
+          <BreadcrumbsItem href="/" label="Início" />
+          <BreadcrumbsItem currentPage label="Blog" />
+        </Breadcrumbs>
+      </div>
+
+      <div class="header-content space-content">
+        <Heading level="h1">Blog</Heading>
+        <p>
+          Um exemplo de listagem de artigos com foco em acessibilidade. Aqui você encontra conteúdos sobre interfaces
+          inclusivas, padrões WCAG e práticas de desenvolvimento front-end acessível.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="blog-listing">
+    <div class="container">
+      <p class="listing-meta">Post {postsExibidos[0].id} até {postsExibidos.at(-1)?.id} de {posts.length} no total</p>
+
+      <div class="posts-grid">
+        {postsExibidos.map((post) => (
+          <article class="post-card">
+            <div class="post-cover" aria-hidden="true" />
+            <div class="post-content">
+              <Heading level="h2" size="h5">{post.titulo}</Heading>
+              <p>{post.resumo}</p>
+              <p class="post-user">autorId: {post.autorId}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</DefaultLayout>
+
+<style>
+  .blog-header {
+    border-block: 1px solid var(--border-color-subtle);
+    padding-block: var(--space-xl);
+  }
+
+  .blog-header .header-breadcrumbs {
+    margin-block-end: var(--space-xl);
+  }
+
+  .blog-header .header-content {
+    max-inline-size: 85ch;
+  }
+
+  .blog-listing {
+    padding-block: var(--space-3xl);
+  }
+
+  .listing-meta {
+    margin-block-end: var(--space-s);
+    font-style: italic;
+  }
+
+  .posts-grid {
+    display: grid;
+    gap: var(--space-l);
+  }
+
+  .post-card {
+    overflow: clip;
+    border: 2px solid var(--border-color-subtle);
+    border-radius: var(--radius-m);
+    background: hsl(213deg 88% 6%);
+  }
+
+  .post-cover {
+    aspect-ratio: 16/9;
+    background: linear-gradient(135deg, hsl(210deg 75% 90%), hsl(264deg 74% 75%), hsl(192deg 68% 82%));
+  }
+
+  .post-card:nth-child(2n) .post-cover {
+    background: linear-gradient(135deg, hsl(33deg 38% 72%), hsl(24deg 30% 65%), hsl(33deg 62% 86%));
+  }
+
+  .post-card:nth-child(3n) .post-cover {
+    background: linear-gradient(135deg, hsl(174deg 52% 79%), hsl(178deg 61% 74%), hsl(165deg 67% 84%));
+  }
+
+  .post-content {
+    display: grid;
+    gap: var(--space-s);
+    padding: var(--space-s);
+  }
+
+  .post-content :global(.heading) {
+    line-height: 1.3;
+  }
+
+  .post-user {
+    margin-block-start: var(--space-xs);
+    color: hsl(0deg 0% 85%);
+  }
+
+  @media (width >= 48rem) {
+    .posts-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (width >= 70rem) {
+    .posts-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>
