@@ -1,18 +1,3 @@
----
-import { Image } from 'astro:assets'
-import logo from '../../assets/img/logo.svg'
-
-interface Props {
-  /**
-   * Whether to load the image eagerly or lazily
-   * @default 'eager'
-   */
-  loading?: 'eager' | 'lazy'
-}
-
-const { loading = 'eager' }: Props = Astro.props
----
-
 <a href="/" class="flex items-center gap-2">
   <span class="font-bold">Guia Acessibilidade na web</span>
 </a>

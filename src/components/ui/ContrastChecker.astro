@@ -1,0 +1,426 @@
+---
+const defaultTextColor = '#111827'
+const defaultBackgroundColor = '#FFFFFF'
+---
+
+<section class="contrast-checker" data-contrast-checker>
+  <div class="checker-grid">
+    <form class="checker-panel space-content" novalidate>
+      <div class="space-content-sm">
+        <h2 class="checker-title">Escolha as cores</h2>
+        <p>
+          Informe a cor do texto e a cor de fundo em hexadecimal. A ferramenta calcula a proporção de contraste e
+          indica se a combinação atende aos níveis AA e AAA.
+        </p>
+      </div>
+
+      <div class="color-field">
+        <label for="contrast-text-color">Cor do texto</label>
+        <div class="field-row">
+          <input
+            id="contrast-text-color"
+            name="textColor"
+            type="text"
+            inputmode="text"
+            autocomplete="off"
+            spellcheck="false"
+            aria-describedby="contrast-text-color-help contrast-text-color-error"
+            value={defaultTextColor}
+            data-color-text
+          />
+          <input
+            type="color"
+            aria-label="Selecionar cor do texto"
+            value={defaultTextColor}
+            data-color-picker-text
+          />
+        </div>
+        <p id="contrast-text-color-help" class="field-help">Aceita `#RGB` ou `#RRGGBB`.</p>
+        <p id="contrast-text-color-error" class="field-error" data-error-text hidden></p>
+      </div>
+
+      <div class="color-field">
+        <label for="contrast-background-color">Cor de fundo</label>
+        <div class="field-row">
+          <input
+            id="contrast-background-color"
+            name="backgroundColor"
+            type="text"
+            inputmode="text"
+            autocomplete="off"
+            spellcheck="false"
+            aria-describedby="contrast-background-color-help contrast-background-color-error"
+            value={defaultBackgroundColor}
+            data-color-background
+          />
+          <input
+            type="color"
+            aria-label="Selecionar cor de fundo"
+            value={defaultBackgroundColor}
+            data-color-picker-background
+          />
+        </div>
+        <p id="contrast-background-color-help" class="field-help">Use combinações reais do seu design.</p>
+        <p id="contrast-background-color-error" class="field-error" data-error-background hidden></p>
+      </div>
+    </form>
+
+    <div class="space-content">
+      <section class="preview-panel space-content" aria-labelledby="contrast-preview-title">
+        <div class="preview-heading">
+          <h2 id="contrast-preview-title" class="checker-title">Prévia</h2>
+          <p class="ratio-badge" aria-live="polite" data-ratio-badge>21.00:1</p>
+        </div>
+
+        <div class="preview-surface" data-preview-surface>
+          <p class="preview-kicker">Texto normal</p>
+          <p class="preview-body" data-preview-body>
+            Este texto simula conteúdo de leitura comum com tamanho normal.
+          </p>
+          <p class="preview-kicker">Texto grande</p>
+          <p class="preview-large" data-preview-large>
+            Este texto simula um título ou trecho grande.
+          </p>
+        </div>
+      </section>
+
+      <section class="results-panel space-content" aria-labelledby="contrast-results-title">
+        <div class="space-content-sm">
+          <h2 id="contrast-results-title" class="checker-title">Resultado AA e AAA</h2>
+          <p>Texto grande considera pelo menos 24px normal ou 18.66px em negrito.</p>
+        </div>
+
+        <ul class="results-list" aria-live="polite">
+          <li class="result-card" data-result="normal-aa">
+            <span class="result-label">Texto normal - AA</span>
+            <strong class="result-status">Aprovado para AA</strong>
+          </li>
+          <li class="result-card" data-result="normal-aaa">
+            <span class="result-label">Texto normal - AAA</span>
+            <strong class="result-status">Aprovado para AAA</strong>
+          </li>
+          <li class="result-card" data-result="large-aa">
+            <span class="result-label">Texto grande - AA</span>
+            <strong class="result-status">Aprovado para AA</strong>
+          </li>
+          <li class="result-card" data-result="large-aaa">
+            <span class="result-label">Texto grande - AAA</span>
+            <strong class="result-status">Aprovado para AAA</strong>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </div>
+
+  <aside class="checker-note" aria-labelledby="contrast-note-title">
+    <h2 id="contrast-note-title" class="checker-title">Importante</h2>
+    <p>
+      Contraste é só uma parte da acessibilidade. Mesmo uma combinação aprovada ainda precisa de validação de foco,
+      semântica, teclado e leitura assistiva.
+    </p>
+  </aside>
+</section>
+
+<script>
+  import { calculateContrastRatio, evaluateContrast, formatContrastRatio, normalizeHexColor } from '~/lib/contrast'
+
+  const setupContrastChecker = (root) => {
+    if (!(root instanceof HTMLElement) || root.dataset.initialized === 'true') return
+    root.dataset.initialized = 'true'
+
+    const textInput = root.querySelector('[data-color-text]')
+    const backgroundInput = root.querySelector('[data-color-background]')
+    const textPicker = root.querySelector('[data-color-picker-text]')
+    const backgroundPicker = root.querySelector('[data-color-picker-background]')
+    const textError = root.querySelector('[data-error-text]')
+    const backgroundError = root.querySelector('[data-error-background]')
+    const previewSurface = root.querySelector('[data-preview-surface]')
+    const previewBody = root.querySelector('[data-preview-body]')
+    const previewLarge = root.querySelector('[data-preview-large]')
+    const ratioBadge = root.querySelector('[data-ratio-badge]')
+    const resultCards = {
+      normalAa: root.querySelector('[data-result="normal-aa"]'),
+      normalAaa: root.querySelector('[data-result="normal-aaa"]'),
+      largeAa: root.querySelector('[data-result="large-aa"]'),
+      largeAaa: root.querySelector('[data-result="large-aaa"]'),
+    }
+
+    if (
+      !(textInput instanceof HTMLInputElement) ||
+      !(backgroundInput instanceof HTMLInputElement) ||
+      !(textPicker instanceof HTMLInputElement) ||
+      !(backgroundPicker instanceof HTMLInputElement) ||
+      !(textError instanceof HTMLElement) ||
+      !(backgroundError instanceof HTMLElement) ||
+      !(previewSurface instanceof HTMLElement) ||
+      !(previewBody instanceof HTMLElement) ||
+      !(previewLarge instanceof HTMLElement) ||
+      !(ratioBadge instanceof HTMLElement)
+    ) {
+      return
+    }
+
+    let lastValidTextColor = textPicker.value
+    let lastValidBackgroundColor = backgroundPicker.value
+
+    const setFieldError = (field, errorElement, message) => {
+      field.setAttribute('aria-invalid', message ? 'true' : 'false')
+      errorElement.hidden = !message
+      errorElement.textContent = message
+    }
+
+    const updateResultCard = (element, passed, passLabel, failLabel) => {
+      if (!(element instanceof HTMLElement)) return
+
+      element.dataset.status = passed ? 'pass' : 'fail'
+      const statusElement = element.querySelector('.result-status')
+
+      if (statusElement instanceof HTMLElement) {
+        statusElement.textContent = passed ? passLabel : failLabel
+      }
+    }
+
+    const renderValidState = (textColor, backgroundColor) => {
+      const ratio = calculateContrastRatio(textColor, backgroundColor)
+      const evaluation = evaluateContrast(ratio)
+
+      lastValidTextColor = textColor
+      lastValidBackgroundColor = backgroundColor
+
+      previewSurface.style.backgroundColor = backgroundColor
+      previewBody.style.color = textColor
+      previewLarge.style.color = textColor
+      ratioBadge.textContent = formatContrastRatio(ratio)
+
+      updateResultCard(resultCards.normalAa, evaluation.normalText.aa, 'Aprovado para AA', 'Não atinge AA')
+      updateResultCard(resultCards.normalAaa, evaluation.normalText.aaa, 'Aprovado para AAA', 'Não atinge AAA')
+      updateResultCard(resultCards.largeAa, evaluation.largeText.aa, 'Aprovado para AA', 'Não atinge AA')
+      updateResultCard(resultCards.largeAaa, evaluation.largeText.aaa, 'Aprovado para AAA', 'Não atinge AAA')
+    }
+
+    const syncPickerFromText = (field, picker, normalized) => {
+      if (normalized) {
+        picker.value = normalized
+      } else {
+        field.value = field.value
+      }
+    }
+
+    const handleStateUpdate = () => {
+      const normalizedTextColor = normalizeHexColor(textInput.value)
+      const normalizedBackgroundColor = normalizeHexColor(backgroundInput.value)
+
+      setFieldError(
+        textInput,
+        textError,
+        normalizedTextColor ? '' : 'Informe uma cor hexadecimal válida, como #111827 ou #FFF.'
+      )
+      setFieldError(
+        backgroundInput,
+        backgroundError,
+        normalizedBackgroundColor ? '' : 'Informe uma cor hexadecimal válida, como #FFFFFF ou #0F0.'
+      )
+
+      syncPickerFromText(textInput, textPicker, normalizedTextColor)
+      syncPickerFromText(backgroundInput, backgroundPicker, normalizedBackgroundColor)
+
+      if (!normalizedTextColor || !normalizedBackgroundColor) {
+        renderValidState(lastValidTextColor, lastValidBackgroundColor)
+        return
+      }
+
+      renderValidState(normalizedTextColor, normalizedBackgroundColor)
+    }
+
+    textInput.addEventListener('input', handleStateUpdate)
+    backgroundInput.addEventListener('input', handleStateUpdate)
+
+    textPicker.addEventListener('input', () => {
+      textInput.value = textPicker.value.toUpperCase()
+      handleStateUpdate()
+    })
+
+    backgroundPicker.addEventListener('input', () => {
+      backgroundInput.value = backgroundPicker.value.toUpperCase()
+      handleStateUpdate()
+    })
+
+    handleStateUpdate()
+  }
+
+  const initializeContrastCheckers = () => {
+    document.querySelectorAll('[data-contrast-checker]').forEach((element) => setupContrastChecker(element))
+  }
+
+  document.addEventListener('astro:page-load', initializeContrastCheckers)
+  initializeContrastCheckers()
+</script>
+
+<style>
+  .contrast-checker {
+    display: grid;
+    gap: var(--space-xl);
+  }
+
+  .checker-grid {
+    display: grid;
+    gap: var(--space-l);
+  }
+
+  .checker-panel,
+  .preview-panel,
+  .results-panel,
+  .checker-note {
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-m);
+    background: light-dark(hsl(210 35% 98%), hsl(215 22% 11%));
+    padding: var(--space-m);
+  }
+
+  .checker-title {
+    margin: 0;
+    font-size: var(--font-size-2);
+  }
+
+  .space-content-sm {
+    display: grid;
+    gap: var(--space-xs);
+  }
+
+  .color-field {
+    display: grid;
+    gap: var(--space-3xs);
+  }
+
+  .color-field label,
+  .result-status {
+    font-weight: 700;
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-xs);
+    align-items: center;
+  }
+
+  .field-row input[type='text'] {
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-s);
+    background: var(--background-color);
+    padding: 0.85rem 1rem;
+    color: inherit;
+    font-family: var(--font-body);
+  }
+
+  .field-row input[type='color'] {
+    inline-size: 3.5rem;
+    block-size: 3rem;
+    cursor: pointer;
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-s);
+    background: transparent;
+    padding: 0.25rem;
+  }
+
+  .field-row input:focus-visible {
+    outline: 3px solid var(--link-color);
+    outline-offset: 2px;
+  }
+
+  .field-help,
+  .field-error {
+    margin: 0;
+    font-size: var(--font-size--1);
+  }
+
+  .field-error {
+    color: hsl(7 70% 48%);
+  }
+
+  .preview-heading {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-xs);
+    align-items: center;
+  }
+
+  .ratio-badge {
+    margin: 0;
+    border: 1px solid var(--border-color-subtle);
+    border-radius: 999px;
+    background: light-dark(hsl(210 40% 95%), hsl(215 18% 15%));
+    padding: 0.5rem 0.9rem;
+    font-weight: 700;
+  }
+
+  .preview-surface {
+    display: grid;
+    gap: var(--space-xs);
+    border-radius: var(--radius-m);
+    padding: var(--space-l);
+    transition: background-color 0.2s ease;
+  }
+
+  .preview-kicker {
+    margin: 0;
+    font-size: var(--font-size--1);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    opacity: 0.8;
+  }
+
+  .preview-body,
+  .preview-large {
+    margin: 0;
+  }
+
+  .preview-body {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .preview-large {
+    font-size: 1.75rem;
+    line-height: 1.3;
+    font-weight: 700;
+  }
+
+  .results-list {
+    display: grid;
+    gap: var(--space-xs);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .result-card {
+    display: grid;
+    gap: var(--space-4xs);
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-s);
+    background: light-dark(hsl(0 0% 100%), hsl(215 24% 15%));
+    padding: var(--space-s);
+  }
+
+  .result-card[data-status='pass'] {
+    border-color: hsl(155 52% 38%);
+  }
+
+  .result-card[data-status='fail'] {
+    border-color: hsl(7 70% 48%);
+  }
+
+  .checker-note p,
+  .result-label {
+    margin: 0;
+  }
+
+  @media (width >= 64rem) {
+    .checker-grid {
+      grid-template-columns: minmax(18rem, 24rem) minmax(0, 1fr);
+      align-items: start;
+    }
+  }
+</style>

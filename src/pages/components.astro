@@ -32,15 +32,15 @@ const prioritizedSections = new Set(['accordion', 'button', 'link', 'heading', '
     <div class="container">
       <div class="header-breadcrumbs">
         <Breadcrumbs ariaLabel="Caminho da página de componentes">
-          <BreadcrumbsItem href="/" label="Home" />
-          <BreadcrumbsItem currentPage label="Accessible Components" />
+          <BreadcrumbsItem href="/" label="Início" />
+          <BreadcrumbsItem currentPage label="Componentes acessíveis" />
         </Breadcrumbs>
       </div>
       <div class="header-content space-content">
-        <Heading level="h1">Accessible components</Heading>
+        <Heading level="h1">Componentes acessíveis</Heading>
         <p>
-          Esta página reúne componentes acessíveis para acelerar o desenvolvimento com HTML semântico, navegação por
-          teclado e foco visível. Use os exemplos como base para montar interfaces inclusivas no seu projeto.
+          Esta página está evoluindo para ser uma referência técnica de implementação. O objetivo é combinar exemplo,
+          contexto de uso, riscos comuns e critérios de teste em um só lugar.
         </p>
       </div>
     </div>
@@ -55,6 +55,32 @@ const prioritizedSections = new Set(['accordion', 'button', 'link', 'heading', '
             O Accordion ajuda a organizar conteúdo extenso em blocos compactos sem perder contexto para leitores de
             tela e usuários de teclado.
           </p>
+          <div class="component-reference" aria-label="Referência técnica do accordion">
+            <div class="reference-card">
+              <Heading level="h3" size="h6">Quando usar</Heading>
+              <p>Quando a página precisa revelar conteúdo complementar sem interromper o fluxo principal de leitura.</p>
+            </div>
+            <div class="reference-card">
+              <Heading level="h3" size="h6">Quando não usar</Heading>
+              <p>Quando a pessoa precisa comparar várias respostas ao mesmo tempo ou o conteúdo é essencial para a tarefa.</p>
+            </div>
+            <div class="reference-card">
+              <Heading level="h3" size="h6">Erros comuns</Heading>
+              <p>Usar gatilhos vagos, esconder instruções críticas e trocar controles nativos por divs com ARIA improvisado.</p>
+            </div>
+            <div class="reference-card">
+              <Heading level="h3" size="h6">Teclado</Heading>
+              <p>O gatilho precisa ser focável, responder a Enter e Space e preservar ordem de tabulação previsível.</p>
+            </div>
+            <div class="reference-card">
+              <Heading level="h3" size="h6">Leitor de tela</Heading>
+              <p>O estado expandido precisa ser comunicado corretamente e o rótulo do gatilho deve indicar o conteúdo.</p>
+            </div>
+            <div class="reference-card">
+              <Heading level="h3" size="h6">WCAG relacionada</Heading>
+              <p>1.3.1 Info and Relationships, 2.1.1 Keyboard, 2.4.3 Focus Order e 4.1.2 Name, Role, Value.</p>
+            </div>
+          </div>
           <div class="component-guidance">
             <p class="guidance-title">Boas práticas</p>
             <ul class="component-checklist" aria-label="Checklist de acessibilidade do accordion">
@@ -87,13 +113,61 @@ const prioritizedSections = new Set(['accordion', 'button', 'link', 'heading', '
               </AccordionItem>
             </Accordion>
 
-            <Fragment slot="notes">
+            <div slot="notes">
               <p>
                 Prefira usar <code>details</code> e <code>summary</code> quando o padrão atender sua necessidade. Isso
                 reduz JavaScript e já fornece estados expandidos/recolhidos com boa semântica.
               </p>
-            </Fragment>
+            </div>
           </ExampleDisclosure>
+
+          <ExampleDisclosure
+            title="Correto vs. incorreto"
+            summary="Comparação curta entre um accordion com semântica nativa e uma implementação frágil comum em código gerado por IA."
+          >
+            <div class="comparison-grid" role="list" aria-label="Comparação entre implementação incorreta e correta">
+              <article class="comparison-card comparison-card-danger" role="listitem">
+                <Heading level="h3" size="h6">Implementação incorreta</Heading>
+                <p>Usa uma <code>div</code> clicável, sem foco por teclado, sem estado expandido e sem relação clara com o conteúdo.</p>
+                <ul class="component-checklist" aria-label="Problemas da implementação incorreta">
+                  <li>Não responde bem a teclado.</li>
+                  <li>Exige ARIA manual para compensar semântica ausente.</li>
+                  <li>Costuma quebrar em leitores de tela e manutenção.</li>
+                </ul>
+              </article>
+              <article class="comparison-card comparison-card-success" role="listitem">
+                <Heading level="h3" size="h6">Implementação recomendada</Heading>
+                <p>Usa <code>details</code> e <code>summary</code> ou um botão nativo com relacionamento claro com o painel.</p>
+                <ul class="component-checklist" aria-label="Benefícios da implementação recomendada">
+                  <li>Entrega foco, teclado e estado expandido com menos código.</li>
+                  <li>Fica mais previsível para tecnologias assistivas.</li>
+                  <li>Reduz risco de regressão ao evoluir o componente.</li>
+                </ul>
+              </article>
+            </div>
+
+            <div slot="notes">
+              <p>
+                Esse tipo de comparação é útil para revisar snippets gerados por IA, que frequentemente resolvem o
+                layout sem garantir o comportamento acessível.
+              </p>
+            </div>
+          </ExampleDisclosure>
+
+          <div class="component-guidance">
+            <p class="guidance-title">Checklist de teste</p>
+            <ul class="component-checklist" aria-label="Checklist de teste do accordion">
+              <li>Tab navega por todos os gatilhos sem prender foco.</li>
+              <li>Enter e Space expandem e recolhem o item esperado.</li>
+              <li>O título do gatilho continua compreensível fora do contexto visual.</li>
+              <li>Leitor de tela anuncia o estado expandido e o rótulo corretamente.</li>
+              <li>O conteúdo aberto mantém ordem lógica de leitura e foco.</li>
+            </ul>
+          </div>
+          <p class="component-related">
+            Para aprofundar a revisão de código com IA, leia o artigo
+            <Link href="/blog/revisao-de-acessibilidade-para-codigo-gerado-por-ia">revisão de acessibilidade para código gerado por IA</Link>.
+          </p>
         </section>
 
         <section id="button" class="component-block space-content">
@@ -124,12 +198,12 @@ const prioritizedSections = new Set(['accordion', 'button', 'link', 'heading', '
               </div>
             </div>
 
-            <Fragment slot="notes">
+            <div slot="notes">
               <p>
                 Use o atributo `type="button"` quando o botão estiver fora de um envio de formulário. Isso evita
                 submissões acidentais.
               </p>
-            </Fragment>
+            </div>
           </ExampleDisclosure>
         </section>
 
@@ -157,7 +231,7 @@ const prioritizedSections = new Set(['accordion', 'button', 'link', 'heading', '
               <div class="breadcrumbs-surface">
                 <p class="breadcrumbs-label">Você está aqui</p>
                 <Breadcrumbs ariaLabel="Caminho da documentação de componentes">
-                  <BreadcrumbsItem href="/" label="Home" />
+                  <BreadcrumbsItem href="/" label="Início" />
                   <BreadcrumbsItem href="/components" label="Componentes" />
                   <BreadcrumbsItem currentPage label="Breadcrumbs" />
                 </Breadcrumbs>
@@ -166,11 +240,11 @@ const prioritizedSections = new Set(['accordion', 'button', 'link', 'heading', '
               </div>
             </div>
 
-            <Fragment slot="notes">
+            <div slot="notes">
               <p>
                 Evite usar breadcrumbs como substituto do menu principal. Eles funcionam melhor como apoio de contexto.
               </p>
-            </Fragment>
+            </div>
           </ExampleDisclosure>
         </section>
 
@@ -232,12 +306,12 @@ const prioritizedSections = new Set(['accordion', 'button', 'link', 'heading', '
               <button type="submit" class="demo-button demo-button-primary">Enviar formulário</button>
             </form>
 
-            <Fragment slot="notes">
+            <div slot="notes">
               <p>
                 O texto de ajuda precisa complementar o campo antes do envio. Quando houver erro, associe a mensagem ao
                 controle usando <code>aria-describedby</code>.
               </p>
-            </Fragment>
+            </div>
           </ExampleDisclosure>
         </section>
 
@@ -271,9 +345,9 @@ const prioritizedSections = new Set(['accordion', 'button', 'link', 'heading', '
               <p>Títulos curtos e objetivos ajudam tanto na leitura rápida quanto no uso de leitores de tela.</p>
             </div>
 
-            <Fragment slot="notes">
+            <div slot="notes">
               <p>Evite usar heading apenas para estilizar texto. Se não for um título de seção, provavelmente não deve ser heading.</p>
-            </Fragment>
+            </div>
           </ExampleDisclosure>
         </section>
 
@@ -307,17 +381,17 @@ const prioritizedSections = new Set(['accordion', 'button', 'link', 'heading', '
                   documentação da W3C WAI
                 </Link>.
               </p>
-              <Link href="/contact" isButton type="primary" animateOnHover animationType="nudge">
-                Entrar em contato
+              <Link href="/blog" isButton type="primary" animateOnHover animationType="nudge">
+                Ver artigos relacionados
               </Link>
             </div>
 
-            <Fragment slot="notes">
+            <div slot="notes">
               <p>
                 Quando um link externo abre nova aba, vale informar isso no rótulo acessível, principalmente se a ação
                 puder surpreender a pessoa.
               </p>
-            </Fragment>
+            </div>
           </ExampleDisclosure>
         </section>
 
@@ -352,12 +426,12 @@ const prioritizedSections = new Set(['accordion', 'button', 'link', 'heading', '
               </p>
             </div>
 
-            <Fragment slot="notes">
+            <div slot="notes">
               <p>
                 Se a mesma informação já estiver completamente descrita em texto próximo, considere usar `alt=""` para
                 evitar redundância em leitores de tela.
               </p>
-            </Fragment>
+            </div>
           </ExampleDisclosure>
         </section>
 
@@ -376,7 +450,7 @@ const prioritizedSections = new Set(['accordion', 'button', 'link', 'heading', '
 
       <aside class="toc" aria-labelledby="toc-title">
         <div class="toc-wrapper">
-          <Heading id="toc-title" level="h2" size="h4">On this page</Heading>
+          <Heading id="toc-title" level="h2" size="h4">Nesta página</Heading>
           <nav aria-label="Índice de componentes">
             <ul>
               {componentSections.map((item) => (
@@ -431,6 +505,12 @@ const prioritizedSections = new Set(['accordion', 'button', 'link', 'heading', '
     gap: var(--space-2xl);
   }
 
+  .component-reference,
+  .comparison-grid {
+    display: grid;
+    gap: var(--space-s);
+  }
+
   .component-block {
     scroll-margin-top: 7rem;
     border-block-end: 1px solid var(--border-color-subtle);
@@ -447,6 +527,22 @@ const prioritizedSections = new Set(['accordion', 'button', 'link', 'heading', '
     background: light-dark(hsl(210 35% 97%), hsl(215 22% 12%));
     border-radius: 0 var(--radius-s) var(--radius-s) 0;
     padding: var(--space-s) var(--space-m);
+  }
+
+  .reference-card,
+  .comparison-card {
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-s);
+    background: light-dark(hsl(210 25% 98%), hsl(215 18% 10%));
+    padding: var(--space-s);
+  }
+
+  .comparison-card-danger {
+    border-color: light-dark(hsl(4 70% 55%), hsl(4 70% 45%));
+  }
+
+  .comparison-card-success {
+    border-color: light-dark(hsl(155 70% 35%), hsl(155 70% 40%));
   }
 
   .guidance-title {
@@ -471,7 +567,8 @@ const prioritizedSections = new Set(['accordion', 'button', 'link', 'heading', '
 
   .component-checklist code,
   .component-block code,
-  .breadcrumbs-label {
+  .breadcrumbs-label,
+  .component-related {
     font-family: var(--font-body);
   }
 
@@ -506,6 +603,7 @@ const prioritizedSections = new Set(['accordion', 'button', 'link', 'heading', '
   .sample-actions,
   .button-showcase,
   .breadcrumbs-demo,
+  .component-related,
   .link-demo,
   .heading-demo,
   .media-demo {
@@ -666,6 +764,11 @@ const prioritizedSections = new Set(['accordion', 'button', 'link', 'heading', '
     .content-grid {
       grid-template-columns: minmax(0, 1fr) 18rem;
       align-items: start;
+    }
+
+    .component-reference,
+    .comparison-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 

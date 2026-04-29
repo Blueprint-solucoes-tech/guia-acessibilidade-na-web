@@ -1,0 +1,36 @@
+---
+import A11yChecklist from '~/components/ui/A11yChecklist.astro'
+import DefaultLayout from '~/layouts/DefaultLayout.astro'
+import PageHeader from '~/components/ui/PageHeader.astro'
+---
+
+<DefaultLayout
+  title="Checklist de revisão a11y"
+  description="Checklist interativo para revisar semântica, teclado, foco, formulários, ARIA e contraste antes de publicar."
+>
+  <section class="my-12">
+    <PageHeader
+      title="Checklist de revisão a11y"
+      subtitle="Faça uma revisão rápida de <strong>semântica</strong>, <strong>teclado</strong>, <strong>foco</strong>, <strong>formulários</strong> e <strong>ARIA</strong> antes de publicar uma interface."
+      bgType="bordered"
+      customBreadcrumbLabels={{ ferramentas: 'Ferramentas', 'checklist-a11y': 'Checklist a11y' }}
+    />
+  </section>
+
+  <section class="container my-16">
+    <div class="tool-intro">
+      <p>
+        Esta ferramenta serve como apoio para revisão manual, inclusive em interfaces geradas com ajuda de IA. Ela não
+        substitui testes com leitor de tela, navegação por teclado nem validação da tarefa real.
+      </p>
+    </div>
+    <A11yChecklist />
+  </section>
+</DefaultLayout>
+
+<style>
+  .tool-intro {
+    max-inline-size: 75ch;
+    margin-block-end: var(--space-l);
+  }
+</style>

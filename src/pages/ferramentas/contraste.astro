@@ -1,0 +1,36 @@
+---
+import ContrastChecker from '~/components/ui/ContrastChecker.astro'
+import DefaultLayout from '~/layouts/DefaultLayout.astro'
+import PageHeader from '~/components/ui/PageHeader.astro'
+---
+
+<DefaultLayout
+  title="Verificador de contraste"
+  description="Ferramenta para verificar contraste entre cor de texto e fundo com status WCAG AA e AAA."
+>
+  <section class="my-12">
+    <PageHeader
+      title="Verificador de contraste"
+      subtitle="Confira a proporção de contraste entre texto e fundo e veja se a combinação atende aos critérios <strong>AA</strong> e <strong>AAA</strong> da WCAG para texto normal e texto grande."
+      bgType="bordered"
+      customBreadcrumbLabels={{ ferramentas: 'Ferramentas', contraste: 'Contraste' }}
+    />
+  </section>
+
+  <section class="container my-16">
+    <div class="tool-intro">
+      <p>
+        Esta ferramenta mede apenas contraste de cor. Use o resultado como apoio antes de validar foco, semântica,
+        teclado e leitura assistiva.
+      </p>
+    </div>
+    <ContrastChecker />
+  </section>
+</DefaultLayout>
+
+<style>
+  .tool-intro {
+    max-inline-size: 75ch;
+    margin-block-end: var(--space-l);
+  }
+</style>

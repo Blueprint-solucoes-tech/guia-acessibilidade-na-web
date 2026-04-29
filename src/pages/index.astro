@@ -16,59 +16,57 @@ import Avatar from '~/components/core/Avatar/Avatar.astro'
   <Hero />
   <section class="my-64">
     <div class="container">
-      <Heading level="h2" class="mb-8">Funcionalidades</Heading>
+      <Heading level="h2" class="mb-8">O que você encontra aqui</Heading>
       <div class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
-        <Feature icon="lucide:accessibility" title="Acessibilidade por padrão">
-          Navegação por teclado, indicadores de foco, rótulos ARIA, HTML semântico e muito mais. O tema foi pensado para
-          ser acessível desde o início.
+        <Feature icon="lucide:accessibility" title="Componentes com contexto">
+          Não basta copiar markup. Cada exemplo existe para explicar decisão semântica, foco, teclado e uso criterioso
+          de ARIA.
         </Feature>
-        <Feature icon="lucide:puzzle" title="A11Y componentes">
-          Vários componentes acessíveis, todos testados e otimizados para garantir a melhor experiência para seus
-          usuários.
+        <Feature icon="lucide:puzzle" title="Exemplos reutilizáveis">
+          O foco do guia é oferecer base prática para adaptar em projeto real, não só uma vitrine visual de componentes.
         </Feature>
-        <Feature icon="lucide:moon" title="Modo escuro">
-          Modo escuro totalmente integrado, oferecendo aos usuários a liberdade de escolher a forma de visualização que
-          preferem.
+        <Feature icon="lucide:scan-search" title="Critérios de validação">
+          O projeto prioriza checklists simples para revisar navegação por teclado, foco visível, semântica e feedback.
         </Feature>
-        <Feature icon="lucide:bookmark" title="Blog">
-          Conte com um blog dedicado à acessibilidade, com artigos, boas práticas e exemplos para aprofundar seu
-          conhecimento.
+        <Feature icon="lucide:file-search" title="Revisão de código com IA">
+          Interfaces geradas por IA costumam parecer corretas antes de serem testadas. O guia ajuda a revisar esse tipo
+          de código com mais rigor.
         </Feature>
-        <Feature icon="lucide:bookmark" title="Contribua com a comunidade">
-          Projeto open source para você estudar, sugerir melhorias e colaborar com a acessibilidade na web.
+        <Feature icon="lucide:notebook-pen" title="Conteúdo editorial conectado ao código">
+          Os artigos existem para aprofundar problemas concretos do repositório, em vez de repetir teoria genérica.
         </Feature>
-        <Feature icon="lucide:bookmark" title="Teste rapidamente a legibilidade das suas cores">
-          Ferramenta integrada para testar o contraste das suas cores e garantir conformidade com a WCAG.
+        <Feature icon="lucide:github" title="Projeto aberto e auditável">
+          As decisões do guia ficam explícitas no código, no roadmap e na documentação, facilitando revisão e
+          contribuição.
         </Feature>
       </div>
     </div>
   </section>
   <ContentMedia imgSrc="/home/accessible-components.png">
-    <Heading level="h2">Componentes Acessiveís</Heading>
+    <Heading level="h2">Componentes acessíveis com critérios claros</Heading>
     <p class="text-2xl">
-      Construir interfaces acessíveis não deveria ser um esforço extra. Por isso, este guia reúne componentes pensados
-      desde a base com acessibilidade em mente: HTML semântico, navegação por teclado, estados de foco visíveis e uso
-      consciente de ARIA.
+      A página de componentes está evoluindo para virar material de consulta. A ideia não é só mostrar o componente
+      funcionando, mas registrar quando usar, quando evitar, quais erros são comuns e como testar.
     </p>
   </ContentMedia>
   <ContentMedia imgSrc="/home/test.png">
-    <Heading level="h2">Testes de Acessibilidade</Heading>
+    <Heading level="h2">Validação antes de publicar</Heading>
     <p class="text-2xl">
-      Acessibilidade não é algo que se valida apenas no final do projeto. Neste guia, você aprende como testar
-      interfaces desde o início, combinando navegação por teclado, leitores de tela e ferramentas automatizadas.
+      Acessibilidade não se resolve com uma única ferramenta. O guia combina navegação por teclado, leitura assistiva e
+      auditoria automatizada para mostrar o que precisa ser verificado de verdade.
     </p>
     <p class="mt-4 text-2xl">
-      O foco é entender o que cada teste realmente avalia, quando confiar em ferramentas automáticas e como identificar
-      problemas que só aparecem na experiência real de uso.
+      Isso vale ainda mais para código gerado com ajuda de IA, que frequentemente acerta a aparência e erra a
+      experiência real de uso.
     </p>
   </ContentMedia>
   <section class="my-64">
     <div class="container grid grid-cols-1 gap-12 md:grid-cols-2">
       <div class="flex flex-col items-start gap-4">
-        <Heading level="h2">Perguntas frequentes</Heading>
+        <Heading level="h2">Como usar este guia</Heading>
         <p class="text-2xl">
-          Esta seção reúne as dúvidas mais comuns sobre o Guia de Acessibilidade na Web e apresenta, na prática, como
-          utilizar componentes acessíveis para organizar conteúdo de forma clara, semântica e inclusiva.
+          O projeto foi pensado para consulta prática. Use os componentes como base, os artigos como contexto e os
+          checklists como critério de revisão.
         </p>
         <Link
           href="https://github.com/Gabrielbsb21/guia-acessibilidade-na-web/issues"
@@ -83,43 +81,38 @@ import Avatar from '~/components/core/Avatar/Avatar.astro'
       </div>
       <div class="space-content">
         <Accordion>
-          <AccordionItem name="exclusive" title="O que é o Guia de Acessibilidade na Web?" open>
+          <AccordionItem name="exclusive" title="O que diferencia este guia de conteúdo genérico sobre WCAG?" open>
             <p>
-              O Guia de Acessibilidade na Web é um projeto open source criado para ajudar desenvolvedores, designers e
-              equipes de produto a entenderem e aplicarem acessibilidade de forma prática. Ele reúne conceitos, exemplos
-              reais de código, boas práticas e padrões reconhecidos, como WCAG e WAI-ARIA.
+              O foco aqui é implementação e revisão. Em vez de repetir teoria, o projeto tenta mostrar como decidir,
+              validar e corrigir componentes acessíveis em código real.
             </p>
           </AccordionItem>
 
           <AccordionItem name="exclusive" title="Para quem este guia é indicado?">
             <p>
-              O guia é voltado principalmente para desenvolvedores front-end, mas também pode ser utilizado por
-              designers, estudantes e qualquer pessoa interessada em criar interfaces mais inclusivas. Não é necessário
-              conhecimento prévio profundo em acessibilidade.
+              Ele é mais útil para desenvolvedores front-end, designers de interface e equipes de produto que precisam
+              revisar experiências reais, não apenas cumprir checklist superficial.
             </p>
           </AccordionItem>
 
           <AccordionItem name="exclusive" title="O guia substitui as diretrizes da WCAG?">
             <p>
-              Não. O guia não substitui a WCAG, mas atua como um complemento prático. Ele traduz as diretrizes em
-              exemplos aplicáveis no dia a dia do desenvolvimento, ajudando a entender como e quando aplicar cada
-              recomendação de forma consciente.
+              Não. A WCAG continua sendo a referência normativa. O papel deste projeto é traduzir isso para exemplos,
+              decisões e critérios operacionais do dia a dia.
             </p>
           </AccordionItem>
 
-          <AccordionItem name="exclusive" title="Posso usar os componentes do guia em meus projetos?">
+          <AccordionItem name="exclusive" title="Como a IA entra nesse contexto?">
             <p>
-              Sim. Os componentes apresentados no guia são pensados para serem reutilizáveis e adaptáveis. Você pode
-              usá-los como referência, base de estudo ou ponto de partida para criar seus próprios componentes
-              acessíveis em diferentes frameworks.
+              A IA acelera a produção de interface, mas ainda erra semântica, foco, teclado e ARIA com frequência. O
+              guia passa a tratar esses casos explicitamente, para ajudar na auditoria do que foi gerado.
             </p>
           </AccordionItem>
 
-          <AccordionItem name="exclusive" title="Como posso contribuir com o guia?">
+          <AccordionItem name="exclusive" title="Posso usar os componentes e checklists no meu projeto?">
             <p>
-              O Guia de Acessibilidade na Web é um projeto colaborativo. Você pode contribuir sugerindo melhorias,
-              corrigindo conteúdos, adicionando exemplos ou abrindo issues no repositório do projeto. Toda contribuição
-              é bem-vinda.
+              Sim. A proposta é justamente servir como base prática de estudo, adaptação e revisão, desde que cada uso
+              preserve o contexto e os testes necessários.
             </p>
           </AccordionItem>
         </Accordion>
@@ -128,8 +121,8 @@ import Avatar from '~/components/core/Avatar/Avatar.astro'
   </section>
   <section class="my-64">
     <div class="space-content container">
-      <Heading level="h2">Nossa Comunidade</Heading>
-      <p class="text-2xl">Construímos juntos um guia acessível para todos</p>
+      <Heading level="h2">Contribuição aberta</Heading>
+      <p class="text-2xl">O projeto cresce melhor quando cada exemplo vem acompanhado de contexto, teste e revisão.</p>
       <AvatarGroup display="grid" gridItemsSize="300px" gridGap="2rem">
         <Avatar initials="GT" title="Gabriel Teixeira" subtitle="Engenheiro de Software" />
         <Avatar initials="DV" title="Darth Vader" subtitle="Engenheiro de Software" />

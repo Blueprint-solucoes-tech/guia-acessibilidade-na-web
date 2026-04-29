@@ -1,0 +1,322 @@
+---
+const checklistSections = [
+  {
+    id: 'semantica',
+    title: 'Semântica e estrutura',
+    description: 'Revise se a base da interface usa HTML nativo antes de depender de ARIA.',
+    items: [
+      'Há um heading principal claro e a hierarquia de títulos não pula níveis sem motivo.',
+      'Links são usados para navegação e botões são usados para ações.',
+      'Landmarks como header, main, nav e footer ajudam a entender a estrutura da página.',
+      'Listas, tabelas e grupos de campos usam elementos semânticos adequados.',
+    ],
+  },
+  {
+    id: 'teclado',
+    title: 'Teclado e foco',
+    description: 'Valide o fluxo real de navegação sem depender de mouse ou touch.',
+    items: [
+      'A navegação por Tab percorre a interface em ordem lógica.',
+      'Shift + Tab retorna sem prender o foco em componentes interativos.',
+      'Enter e Space acionam os controles esperados.',
+      'O foco visível é perceptível em todos os controles importantes.',
+    ],
+  },
+  {
+    id: 'formularios',
+    title: 'Formulários e feedback',
+    description: 'Garanta que as pessoas entendam o que preencher e o que aconteceu depois da ação.',
+    items: [
+      'Cada campo possui label visível e clara.',
+      'Mensagens de ajuda e erro estão associadas ao campo correto.',
+      'Campos obrigatórios e formatos esperados são explicados antes do envio.',
+      'Estados de sucesso, erro e carregamento são comunicados além da cor.',
+    ],
+  },
+  {
+    id: 'aria',
+    title: 'ARIA e estados',
+    description: 'Use ARIA para complementar semântica, não para compensar estrutura ruim.',
+    items: [
+      'ARIA aparece apenas quando o HTML nativo não resolve sozinho.',
+      'Rótulos acessíveis não substituem texto visível sem necessidade.',
+      'Estados como expandido, selecionado ou desabilitado são anunciados corretamente.',
+      'Não há elementos relevantes escondidos indevidamente com aria-hidden.',
+    ],
+  },
+  {
+    id: 'conteudo',
+    title: 'Conteúdo, mídia e contraste',
+    description: 'Feche a revisão com o que costuma falhar na experiência real de uso.',
+    items: [
+      'Imagens informativas têm texto alternativo útil; decorativas usam alt vazio.',
+      'O contraste do texto e dos elementos essenciais atende ao contexto de uso.',
+      'Links e botões têm texto que explica a consequência da ação.',
+      'A página continua compreensível em leitor de tela e zoom elevado.',
+    ],
+  },
+] as const
+
+const totalItems = checklistSections.reduce((sum, section) => sum + section.items.length, 0)
+---
+
+<section class="a11y-checklist" data-a11y-checklist>
+  <div class="checklist-shell">
+    <aside class="summary-card space-content" aria-labelledby="checklist-summary-title">
+      <div class="space-content-sm">
+        <h2 id="checklist-summary-title" class="checklist-title">Resumo da revisão</h2>
+        <p>Use este checklist para revisar interfaces antes de publicar, inclusive quando o código foi gerado com ajuda de IA.</p>
+      </div>
+
+      <div class="summary-stats" aria-live="polite">
+        <p class="summary-value" data-completed-count>0/{totalItems}</p>
+        <p class="summary-label">itens concluídos</p>
+        <progress max={totalItems} value="0" data-checklist-progress>0</progress>
+      </div>
+
+      <ul class="summary-list">
+        <li><strong data-remaining-count>{totalItems}</strong> itens restantes</li>
+        <li><strong data-progress-label>0%</strong> da revisão concluída</li>
+      </ul>
+
+      <button type="button" class="reset-button" data-reset-checklist>Limpar checklist</button>
+    </aside>
+
+    <div class="sections-list">
+      {checklistSections.map((section) => (
+        <section class="section-card space-content" aria-labelledby={`${section.id}-title`}>
+          <div class="space-content-sm">
+            <h2 id={`${section.id}-title`} class="checklist-title">{section.title}</h2>
+            <p>{section.description}</p>
+          </div>
+
+          <fieldset class="checklist-group">
+            <legend class="sr-only">{section.title}</legend>
+            <ul class="checklist-items">
+              {section.items.map((item, index) => {
+                const inputId = `${section.id}-${index + 1}`
+
+                return (
+                  <li>
+                    <label class="checklist-item" for={inputId}>
+                      <input id={inputId} type="checkbox" data-checklist-item />
+                      <span>{item}</span>
+                    </label>
+                  </li>
+                )
+              })}
+            </ul>
+          </fieldset>
+        </section>
+      ))}
+    </div>
+  </div>
+
+  <aside class="note-card" aria-labelledby="checklist-note-title">
+    <h2 id="checklist-note-title" class="checklist-title">Como usar</h2>
+    <p>
+      Este checklist não substitui testes com pessoas, leitor de tela ou inspeção do fluxo real da tarefa. Ele serve
+      como apoio para reduzir erros comuns em revisão manual.
+    </p>
+  </aside>
+</section>
+
+<script>
+  const setupChecklist = (root) => {
+    if (!(root instanceof HTMLElement) || root.dataset.initialized === 'true') return
+    root.dataset.initialized = 'true'
+
+    const checkboxes = [...root.querySelectorAll('[data-checklist-item]')].filter(
+      (element) => element instanceof HTMLInputElement
+    )
+    const completedCount = root.querySelector('[data-completed-count]')
+    const remainingCount = root.querySelector('[data-remaining-count]')
+    const progressLabel = root.querySelector('[data-progress-label]')
+    const progress = root.querySelector('[data-checklist-progress]')
+    const resetButton = root.querySelector('[data-reset-checklist]')
+
+    if (
+      !(completedCount instanceof HTMLElement) ||
+      !(remainingCount instanceof HTMLElement) ||
+      !(progressLabel instanceof HTMLElement) ||
+      !(progress instanceof HTMLProgressElement) ||
+      !(resetButton instanceof HTMLButtonElement)
+    ) {
+      return
+    }
+
+    const updateSummary = () => {
+      const total = checkboxes.length
+      const completed = checkboxes.filter((checkbox) => checkbox.checked).length
+      const remaining = total - completed
+      const percentage = total === 0 ? 0 : Math.round((completed / total) * 100)
+
+      completedCount.textContent = `${completed}/${total}`
+      remainingCount.textContent = String(remaining)
+      progressLabel.textContent = `${percentage}%`
+      progress.value = completed
+      progress.textContent = String(completed)
+    }
+
+    checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener('change', updateSummary)
+    })
+
+    resetButton.addEventListener('click', () => {
+      checkboxes.forEach((checkbox) => {
+        checkbox.checked = false
+      })
+
+      updateSummary()
+    })
+
+    updateSummary()
+  }
+
+  const initializeChecklists = () => {
+    document.querySelectorAll('[data-a11y-checklist]').forEach((element) => setupChecklist(element))
+  }
+
+  document.addEventListener('astro:page-load', initializeChecklists)
+  initializeChecklists()
+</script>
+
+<style>
+  .a11y-checklist {
+    display: grid;
+    gap: var(--space-xl);
+  }
+
+  .checklist-shell {
+    display: grid;
+    gap: var(--space-l);
+  }
+
+  .summary-card,
+  .section-card,
+  .note-card {
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-m);
+    background: light-dark(hsl(210 35% 98%), hsl(215 22% 11%));
+    padding: var(--space-m);
+  }
+
+  .checklist-title {
+    margin: 0;
+    font-size: var(--font-size-2);
+  }
+
+  .space-content-sm {
+    display: grid;
+    gap: var(--space-xs);
+  }
+
+  .summary-stats {
+    display: grid;
+    gap: var(--space-3xs);
+  }
+
+  .summary-value,
+  .summary-label,
+  .summary-list,
+  .note-card p {
+    margin: 0;
+  }
+
+  .summary-value {
+    font-size: var(--font-size-4);
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .summary-label {
+    color: light-dark(hsl(215 18% 30%), hsl(215 15% 78%));
+  }
+
+  .summary-stats progress {
+    inline-size: 100%;
+    block-size: 0.9rem;
+  }
+
+  .summary-list {
+    display: grid;
+    gap: var(--space-4xs);
+    padding-inline-start: 1.25rem;
+  }
+
+  .reset-button {
+    cursor: pointer;
+    border: 2px solid var(--border-color-subtle);
+    border-radius: var(--radius-s);
+    background: transparent;
+    padding: 0.8rem 1rem;
+    inline-size: fit-content;
+    color: inherit;
+    font-weight: 700;
+  }
+
+  .reset-button:focus-visible,
+  .reset-button:hover {
+    outline: 3px solid var(--link-color);
+    outline-offset: 2px;
+  }
+
+  .sections-list {
+    display: grid;
+    gap: var(--space-l);
+  }
+
+  .checklist-group {
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  .checklist-items {
+    display: grid;
+    gap: var(--space-xs);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .checklist-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-xs);
+    align-items: start;
+    cursor: pointer;
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-s);
+    background: light-dark(hsl(0 0% 100%), hsl(215 24% 15%));
+    padding: var(--space-s);
+  }
+
+  .checklist-item input {
+    margin-block-start: 0.25rem;
+    inline-size: 1rem;
+    block-size: 1rem;
+    accent-color: var(--link-color);
+  }
+
+  .checklist-item:has(input:focus-visible) {
+    outline: 3px solid var(--link-color);
+    outline-offset: 2px;
+  }
+
+  .checklist-item:has(input:checked) {
+    border-color: hsl(155 52% 38%);
+  }
+
+  @media (width >= 70rem) {
+    .checklist-shell {
+      grid-template-columns: minmax(18rem, 22rem) minmax(0, 1fr);
+      align-items: start;
+    }
+
+    .summary-card {
+      position: sticky;
+      top: 1.5rem;
+    }
+  }
+</style>

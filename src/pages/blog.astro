@@ -1,21 +1,18 @@
 ---
+import { getCollection } from 'astro:content'
 import DefaultLayout from '~/layouts/DefaultLayout.astro'
 import Breadcrumbs from '~/components/core/Breadcrumbs/Breadcrumbs.astro'
 import BreadcrumbsItem from '~/components/core/Breadcrumbs/BreadcrumbsItem.astro'
 import Heading from '~/components/core/Heading.astro'
+import Link from '~/components/core/Link.astro'
 
-const posts = Array.from({ length: 30 }, (_, index) => ({
-  id: index + 1,
-  titulo: `Boas práticas de acessibilidade #${index + 1}`,
-  resumo:
-    'Aprenda como estruturar componentes acessíveis com foco em semântica, navegação por teclado, estados de foco visíveis e contraste adequado.',
-  autorId: (index % 5) + 1,
-}))
-
-const postsExibidos = posts.slice(0, 6)
+const posts = (await getCollection('blog')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 ---
 
-<DefaultLayout title="Blog">
+<DefaultLayout
+  title="Blog"
+  description="Artigos práticos sobre implementação, validação e revisão de acessibilidade na web."
+>
   <section class="blog-header">
     <div class="container">
       <div class="header-breadcrumbs">
@@ -28,8 +25,8 @@ const postsExibidos = posts.slice(0, 6)
       <div class="header-content space-content">
         <Heading level="h1">Blog</Heading>
         <p>
-          Um exemplo de listagem de artigos com foco em acessibilidade. Aqui você encontra conteúdos sobre interfaces
-          inclusivas, padrões WCAG e práticas de desenvolvimento front-end acessível.
+          Conteúdo editorial curto e conectado ao código do projeto. Cada artigo existe para aprofundar decisões
+          práticas de acessibilidade, não para repetir teoria genérica.
         </p>
       </div>
     </div>
@@ -37,16 +34,21 @@ const postsExibidos = posts.slice(0, 6)
 
   <section class="blog-listing">
     <div class="container">
-      <p class="listing-meta">Post {postsExibidos[0].id} até {postsExibidos.at(-1)?.id} de {posts.length} no total</p>
+      <p class="listing-meta">{posts.length} artigo{posts.length === 1 ? '' : 's'} publicado{posts.length === 1 ? '' : 's'}</p>
 
       <div class="posts-grid">
-        {postsExibidos.map((post) => (
+        {posts.map((post) => (
           <article class="post-card">
-            <div class="post-cover" aria-hidden="true" />
             <div class="post-content">
-              <Heading level="h2" size="h5">{post.titulo}</Heading>
-              <p>{post.resumo}</p>
-              <p class="post-user">autorId: {post.autorId}</p>
+              <p class="post-tag">{post.data.category}</p>
+              <Heading level="h2" size="h5">
+                <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+              </Heading>
+              <p>{post.data.description}</p>
+              <p class="post-meta">
+                {post.data.pubDate.toLocaleDateString('pt-BR')} · {post.data.readingTime}
+              </p>
+              <Link href={`/blog/${post.id}/`}>Ler artigo</Link>
             </div>
           </article>
         ))}
@@ -66,7 +68,7 @@ const postsExibidos = posts.slice(0, 6)
   }
 
   .blog-header .header-content {
-    max-inline-size: 85ch;
+    max-inline-size: 72ch;
   }
 
   .blog-listing {
@@ -75,7 +77,7 @@ const postsExibidos = posts.slice(0, 6)
 
   .listing-meta {
     margin-block-end: var(--space-s);
-    font-style: italic;
+    color: var(--color-text-muted, currentColor);
   }
 
   .posts-grid {
@@ -84,49 +86,41 @@ const postsExibidos = posts.slice(0, 6)
   }
 
   .post-card {
-    overflow: clip;
-    border: 2px solid var(--border-color-subtle);
+    border: 1px solid var(--border-color-subtle);
     border-radius: var(--radius-m);
-    background: hsl(213deg 88% 6%);
-  }
-
-  .post-cover {
-    aspect-ratio: 16/9;
-    background: linear-gradient(135deg, hsl(210deg 75% 90%), hsl(264deg 74% 75%), hsl(192deg 68% 82%));
-  }
-
-  .post-card:nth-child(2n) .post-cover {
-    background: linear-gradient(135deg, hsl(33deg 38% 72%), hsl(24deg 30% 65%), hsl(33deg 62% 86%));
-  }
-
-  .post-card:nth-child(3n) .post-cover {
-    background: linear-gradient(135deg, hsl(174deg 52% 79%), hsl(178deg 61% 74%), hsl(165deg 67% 84%));
+    background: light-dark(hsl(210 40% 98%), hsl(214 20% 10%));
   }
 
   .post-content {
     display: grid;
     gap: var(--space-s);
-    padding: var(--space-s);
+    padding: var(--space-m);
   }
 
   .post-content :global(.heading) {
-    line-height: 1.3;
+    line-height: 1.25;
   }
 
-  .post-user {
-    margin-block-start: var(--space-xs);
-    color: hsl(0deg 0% 85%);
+  .post-content :global(a) {
+    inline-size: fit-content;
+  }
+
+  .post-tag {
+    margin: 0;
+    color: var(--link-color);
+    font-size: var(--font-size--1);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .post-meta {
+    color: light-dark(hsl(215 15% 35%), hsl(215 12% 72%));
   }
 
   @media (width >= 48rem) {
     .posts-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (width >= 70rem) {
-    .posts-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
 </style>

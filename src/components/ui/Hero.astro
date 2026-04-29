@@ -17,7 +17,15 @@ const { src = '/guia-acessibilidade-web.png' } = Astro.props as Props
         <h1 class="text-center text-4xl md:text-left lg:text-7xl">
           <slot><span class="text-gradient">Guia</span> Acessibilidade na web</slot>
         </h1>
+        <p class="hero-copy text-center text-xl md:text-left">
+          Referência prática para implementar, validar e revisar acessibilidade em interfaces reais, inclusive quando o
+          código foi gerado com ajuda de IA.
+        </p>
         <div class="flex flex-col gap-3 min-[500px]:flex-row">
+          <Link href="/components" isButton type="secondary" animateOnHover animationType="nudge">
+            <Icon aria-hidden="true" name="lucide:library" size="1.5rem" />
+            Ver componentes
+          </Link>
           <Link
             href="https://github.com/Gabrielbsb21/guia-acessibilidade-na-web"
             isButton
@@ -49,5 +57,9 @@ const { src = '/guia-acessibilidade-web.png' } = Astro.props as Props
     background-clip: border-box;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  .hero-copy {
+    max-width: 34rem;
   }
 </style>

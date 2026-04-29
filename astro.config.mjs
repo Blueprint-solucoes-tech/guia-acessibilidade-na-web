@@ -13,6 +13,7 @@ import icon from 'astro-icon';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://guia-acessibilidade-web.netlify.app',
   vite: {
     plugins: [tailwindcss()]
   },

@@ -1,0 +1,89 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content'
+import DefaultLayout from '~/layouts/DefaultLayout.astro'
+import Breadcrumbs from '~/components/core/Breadcrumbs/Breadcrumbs.astro'
+import BreadcrumbsItem from '~/components/core/Breadcrumbs/BreadcrumbsItem.astro'
+import Heading from '~/components/core/Heading.astro'
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog')
+
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }))
+}
+
+interface Props {
+  post: CollectionEntry<'blog'>
+}
+
+const { post } = Astro.props
+const { Content } = await render(post)
+---
+
+<DefaultLayout title={post.data.title} description={post.data.description}>
+  <article class="article-page">
+    <div class="container">
+      <Breadcrumbs ariaLabel="Caminho do artigo">
+        <BreadcrumbsItem href="/" label="Início" />
+        <BreadcrumbsItem href="/blog" label="Blog" />
+        <BreadcrumbsItem currentPage label={post.data.title} />
+      </Breadcrumbs>
+
+      <header class="article-header space-content">
+        <p class="article-tag">{post.data.category}</p>
+        <Heading level="h1">{post.data.title}</Heading>
+        <p class="article-description">{post.data.description}</p>
+        <p class="article-meta">{post.data.pubDate.toLocaleDateString('pt-BR')} · {post.data.readingTime}</p>
+      </header>
+
+      <div class="article-content prose">
+        <Content />
+      </div>
+    </div>
+  </article>
+</DefaultLayout>
+
+<style>
+  .article-page {
+    padding-block: var(--space-2xl);
+  }
+
+  .article-header {
+    max-inline-size: 72ch;
+    margin-block: var(--space-xl) var(--space-2xl);
+  }
+
+  .article-tag {
+    margin: 0;
+    color: var(--link-color);
+    font-size: var(--font-size--1);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .article-description,
+  .article-meta {
+    max-inline-size: 65ch;
+  }
+
+  .article-meta {
+    color: light-dark(hsl(215 15% 35%), hsl(215 12% 72%));
+  }
+
+  .article-content {
+    max-inline-size: 72ch;
+  }
+
+  .article-content :global(h2),
+  .article-content :global(h3) {
+    margin-block-start: var(--space-xl);
+  }
+
+  .article-content :global(ul),
+  .article-content :global(ol) {
+    padding-inline-start: 1.5rem;
+  }
+</style>
