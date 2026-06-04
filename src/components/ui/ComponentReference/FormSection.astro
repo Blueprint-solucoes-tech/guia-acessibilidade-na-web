@@ -1,0 +1,161 @@
+---
+import ComponentSection from './ComponentSection.astro'
+import ExampleDisclosure from '~/components/ui/ExampleDisclosure.astro'
+
+const formCode = String.raw`<form action="#" method="post">
+  <label for="component-name">Nome completo</label>
+  <input id="component-name" name="name" type="text" autocomplete="name" required />
+
+  <fieldset>
+    <legend>Preferência de contato</legend>
+    <label><input type="radio" name="contact-preference" value="email" /> E-mail</label>
+    <label><input type="radio" name="contact-preference" value="phone" /> Telefone</label>
+  </fieldset>
+</form>`
+---
+
+<ComponentSection
+  id="form"
+  title="Form"
+  description="Formulários acessíveis ficam mais fáceis de preencher quando cada campo tem um rótulo claro, os grupos são organizados por assunto e a orientação aparece antes do erro."
+  checklistLabel="Checklist de acessibilidade de formulários"
+  checklistItems={[
+    'Associe cada campo a um <code>label</code> visível.',
+    'Use <code>fieldset</code> e <code>legend</code> para grupos relacionados.',
+    'Explique campos obrigatórios e formato esperado antes do erro.',
+  ]}
+>
+  <ExampleDisclosure
+    title="Formulário curto de inscrição"
+    summary="Campos nativos com ajuda contextual, estados focáveis e agrupamento semântico."
+    code={formCode}
+  >
+    <form class="demo-form" action="#" method="post">
+      <div class="field">
+        <label for="component-name">Nome completo</label>
+        <input id="component-name" name="name" type="text" autocomplete="name" required />
+      </div>
+
+      <div class="field">
+        <label for="component-email">E-mail</label>
+        <input
+          id="component-email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          aria-describedby="component-email-help"
+          required
+        />
+        <p id="component-email-help" class="field-help">Usaremos seu e-mail apenas para responder seu contato.</p>
+      </div>
+
+      <fieldset class="field-group">
+        <legend>Preferência de contato</legend>
+        <label class="choice">
+          <input type="radio" name="contact-preference" value="email" checked />
+          <span>E-mail</span>
+        </label>
+        <label class="choice">
+          <input type="radio" name="contact-preference" value="phone" />
+          <span>Telefone</span>
+        </label>
+      </fieldset>
+
+      <div class="field">
+        <label for="component-message">Mensagem</label>
+        <textarea id="component-message" name="message" rows={4} />
+      </div>
+
+      <button type="submit" class="demo-button demo-button-primary">Enviar formulário</button>
+    </form>
+
+    <div slot="notes">
+      <p>
+        O texto de ajuda precisa complementar o campo antes do envio. Quando houver erro, associe a mensagem ao controle
+        usando <code>aria-describedby</code>.
+      </p>
+    </div>
+  </ExampleDisclosure>
+</ComponentSection>
+
+<style>
+  .demo-form {
+    display: grid;
+    gap: var(--space-s);
+    max-inline-size: 42rem;
+  }
+
+  .field,
+  .field-group {
+    display: grid;
+    gap: var(--space-3xs);
+  }
+
+  .field input,
+  .field textarea {
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-s);
+    background: var(--background-color);
+    padding: 0.75rem 0.85rem;
+    color: inherit;
+  }
+
+  .field input:focus-visible,
+  .field textarea:focus-visible,
+  .choice:focus-within {
+    outline: 3px solid var(--link-color);
+    outline-offset: 2px;
+  }
+
+  .field-help {
+    margin: 0;
+    color: color-mix(in srgb, currentColor 70%, transparent);
+    font-size: var(--font-size--1);
+  }
+
+  .field-group {
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-s);
+    padding: var(--space-s);
+  }
+
+  .field-group legend {
+    padding-inline: 0.3rem;
+    font-weight: 600;
+  }
+
+  .choice {
+    display: inline-flex;
+    gap: 0.5rem;
+    align-items: center;
+    border-radius: var(--radius-s);
+    padding: 0.25rem 0.35rem;
+    inline-size: fit-content;
+  }
+
+  .choice input {
+    accent-color: var(--link-color);
+  }
+
+  .demo-button {
+    border: 2px solid transparent;
+    border-radius: var(--radius-s);
+    background: hsl(177deg 82% 62%);
+    padding: 0.75rem 1rem;
+    color: hsl(214deg 85% 8%);
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+
+  .demo-button:where(:hover, :focus-visible) {
+    text-decoration-color: currentColor;
+  }
+
+  .demo-button:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+  }
+</style>

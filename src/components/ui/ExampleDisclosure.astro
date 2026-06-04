@@ -7,6 +7,8 @@ interface Props {
   summary?: string
   open?: boolean
   label?: string
+  code?: string
+  codeLabel?: string
 }
 
 const {
@@ -15,9 +17,12 @@ const {
   summary,
   open = false,
   label = 'Mostrar exemplo prático',
+  code,
+  codeLabel = 'Código do exemplo',
 } = Astro.props
 
 const hasNotes = Astro.slots.has('notes')
+const hasCode = Boolean(code)
 ---
 
 <details class:list={['example-disclosure', className]} {...open ? { open } : {}}>
@@ -42,6 +47,13 @@ const hasNotes = Astro.slots.has('notes')
     <div class="example-surface">
       <slot />
     </div>
+
+    {hasCode && (
+      <div class="code-example">
+        <p class="code-label">{codeLabel}</p>
+        <pre role="region" aria-label={codeLabel} tabindex="0"><code>{code}</code></pre>
+      </div>
+    )}
 
     {hasNotes && (
       <div class="notes">
@@ -139,6 +151,41 @@ const hasNotes = Astro.slots.has('notes')
     color: var(--example-card-muted);
     font-size: var(--font-size-0);
     line-height: 1.6;
+  }
+
+  :where(.code-example) {
+    display: grid;
+    gap: var(--space-2xs);
+  }
+
+  :where(.code-label) {
+    margin: 0;
+    color: var(--link-color);
+    font-size: var(--font-size--1);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  :where(.code-example pre) {
+    overflow-x: auto;
+    border: 1px solid var(--example-card-border);
+    border-radius: var(--radius-s);
+    background: light-dark(hsl(215 28% 12%), hsl(215 22% 8%));
+    padding: var(--space-s);
+    color: hsl(0 0% 96%);
+    font-size: var(--font-size--1);
+    line-height: 1.6;
+  }
+
+  :where(.code-example pre:focus-visible) {
+    outline: 3px solid var(--link-color);
+    outline-offset: 3px;
+  }
+
+  :where(.code-example code) {
+    font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+    white-space: pre;
   }
 
   :where(.notes p) {

@@ -1,0 +1,95 @@
+---
+import Breadcrumbs from '~/components/core/Breadcrumbs/Breadcrumbs.astro'
+import BreadcrumbsItem from '~/components/core/Breadcrumbs/BreadcrumbsItem.astro'
+import Heading from '~/components/core/Heading.astro'
+import ComponentSection from './ComponentSection.astro'
+import ExampleDisclosure from '~/components/ui/ExampleDisclosure.astro'
+
+const breadcrumbsCode = String.raw`<Breadcrumbs ariaLabel="Caminho da documentação de componentes">
+  <BreadcrumbsItem href="/" label="Início" />
+  <BreadcrumbsItem href="/components" label="Componentes" />
+  <BreadcrumbsItem currentPage label="Breadcrumbs" />
+</Breadcrumbs>`
+---
+
+<ComponentSection
+  id="breadcrumbs"
+  title="Breadcrumbs"
+  description="Breadcrumbs ajudam a pessoa a entender onde está dentro da estrutura do site, principalmente em páginas internas e hierarquias longas."
+  checklistLabel="Checklist de acessibilidade de breadcrumbs"
+  checklistItems={[
+    'Envolva o conjunto em <code>nav</code> com um <code>aria-label</code> descritivo.',
+    'Marque a página atual com <code>aria-current="page"</code>.',
+    'Mantenha a ordem e a nomenclatura coerentes com a navegação principal.',
+  ]}
+>
+  <ExampleDisclosure
+    title="Trilha de navegação para uma página interna"
+    summary="Exemplo com separadores visuais e indicação semântica da página atual."
+    code={breadcrumbsCode}
+  >
+    <div class="breadcrumbs-demo">
+      <p class="demo-caption">Simulação de uma página interna da documentação.</p>
+      <div class="breadcrumbs-surface">
+        <p class="breadcrumbs-label">Você está aqui</p>
+        <Breadcrumbs ariaLabel="Caminho da documentação de componentes">
+          <BreadcrumbsItem href="/" label="Início" />
+          <BreadcrumbsItem href="/components" label="Componentes" />
+          <BreadcrumbsItem currentPage label="Breadcrumbs" />
+        </Breadcrumbs>
+        <Heading level="h3" size="h5">Breadcrumbs acessíveis</Heading>
+        <p>O item atual aparece no final da trilha e ajuda a pessoa a entender exatamente onde está.</p>
+      </div>
+    </div>
+
+    <div slot="notes">
+      <p>Evite usar breadcrumbs como substituto do menu principal. Eles funcionam melhor como apoio de contexto.</p>
+    </div>
+  </ExampleDisclosure>
+</ComponentSection>
+
+<style>
+  .breadcrumbs-demo {
+    display: grid;
+    gap: var(--space-s);
+  }
+
+  .demo-caption {
+    margin: 0;
+    color: light-dark(hsl(215 18% 30%), hsl(215 15% 78%));
+    font-size: var(--font-size--1);
+  }
+
+  .breadcrumbs-surface {
+    display: grid;
+    gap: var(--space-xs);
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-s);
+    background:
+      linear-gradient(180deg, light-dark(hsl(210 40% 98%), hsl(215 22% 16%)) 0 3rem, transparent 3rem),
+      light-dark(hsl(0 0% 100%), hsl(215 24% 18%));
+    padding: var(--space-m);
+  }
+
+  .breadcrumbs-surface :global(.breadcrumbs) {
+    color: inherit;
+  }
+
+  .breadcrumbs-surface :global(.breadcrumbs ol) {
+    gap: 0.35rem;
+  }
+
+  .breadcrumbs-surface :global(.breadcrumbs a) {
+    color: var(--link-color);
+  }
+
+  .breadcrumbs-label {
+    margin: 0;
+    color: light-dark(hsl(215 18% 35%), hsl(215 12% 78%));
+    font-family: var(--font-body);
+    font-size: var(--font-size--1);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+</style>

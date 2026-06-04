@@ -1,0 +1,110 @@
+---
+import Avatar from '~/components/core/Avatar/Avatar.astro'
+import AvatarGroup from '~/components/core/Avatar/AvatarGroup.astro'
+import ComponentSection from './ComponentSection.astro'
+import ExampleDisclosure from '~/components/ui/ExampleDisclosure.astro'
+
+const avatarCode = String.raw`<AvatarGroup display="grid" gridItemsSize="14rem" gridGap="1rem">
+  <div class="avatar-person">
+    <Avatar aria-hidden="true" initials="GT" label="Gabriel Teixeira" type="info" />
+    <div>
+      <p>Gabriel Teixeira</p>
+      <p>Implementação</p>
+    </div>
+  </div>
+</AvatarGroup>`
+---
+
+<ComponentSection
+  id="avatar"
+  title="Avatar"
+  description="Avatares ajudam a reconhecer pessoas, autores ou participantes, mas não devem ser a única forma de identificar alguém em uma interface."
+  checklistLabel="Checklist de acessibilidade de avatar"
+  checklistItems={[
+    'Exiba nome ou rótulo textual quando a identidade for relevante para a tarefa.',
+    'Use iniciais como apoio visual, não como substituto único do nome completo.',
+    'Evite depender apenas de cor, formato ou imagem para diferenciar pessoas.',
+  ]}
+>
+  <ExampleDisclosure
+    title="Avatar com nome, função e grupo"
+    summary="Exemplo com iniciais, texto visível e agrupamento de participantes usando componentes existentes."
+    code={avatarCode}
+  >
+    <div class="avatar-demo">
+      <p class="demo-caption">Exemplo de responsáveis por revisar uma página antes da publicação.</p>
+      <AvatarGroup display="grid" gridItemsSize="14rem" gridGap="1rem">
+        <div class="avatar-person">
+          <Avatar aria-hidden="true" initials="GT" label="Gabriel Teixeira" type="info" />
+          <div class="avatar-person-content">
+            <p class="avatar-person-name">Gabriel Teixeira</p>
+            <p class="avatar-person-role">Implementação</p>
+          </div>
+        </div>
+        <div class="avatar-person">
+          <Avatar aria-hidden="true" initials="AM" label="Ana Martins" type="success" />
+          <div class="avatar-person-content">
+            <p class="avatar-person-name">Ana Martins</p>
+            <p class="avatar-person-role">Revisão de conteúdo</p>
+          </div>
+        </div>
+        <div class="avatar-person">
+          <Avatar aria-hidden="true" initials="RS" label="Rafael Silva" type="warning" />
+          <div class="avatar-person-content">
+            <p class="avatar-person-name">Rafael Silva</p>
+            <p class="avatar-person-role">Revisão de acessibilidade</p>
+          </div>
+        </div>
+      </AvatarGroup>
+    </div>
+
+    <div slot="notes">
+      <p>
+        Quando o avatar for decorativo e o nome já estiver visível, evite duplicar informação para leitores de tela.
+        Quando aparecer sozinho, forneça um rótulo acessível.
+      </p>
+    </div>
+  </ExampleDisclosure>
+</ComponentSection>
+
+<style>
+  .avatar-demo {
+    display: grid;
+    gap: var(--space-s);
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-s);
+    background: light-dark(hsl(0 0% 100%), hsl(215 24% 18%));
+    padding: var(--space-m);
+  }
+
+  .avatar-demo :global(.avatar-group) {
+    margin-block-start: var(--space-xs);
+  }
+
+  .avatar-person {
+    display: inline-flex;
+    gap: var(--space-xs);
+    align-items: center;
+  }
+
+  .avatar-person-content {
+    display: grid;
+    gap: var(--space-3xs);
+  }
+
+  .avatar-person-name,
+  .avatar-person-role,
+  .demo-caption {
+    margin: 0;
+  }
+
+  .avatar-person-name {
+    font-weight: 700;
+  }
+
+  .avatar-person-role,
+  .demo-caption {
+    color: light-dark(hsl(215 18% 35%), hsl(215 12% 78%));
+    font-size: var(--font-size--1);
+  }
+</style>

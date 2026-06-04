@@ -1,0 +1,59 @@
+---
+import Media from '~/components/core/Media.astro'
+import ComponentSection from './ComponentSection.astro'
+import ExampleDisclosure from '~/components/ui/ExampleDisclosure.astro'
+
+const mediaCode = String.raw`<Media
+  src="/home/accessible-components.png"
+  alt="Captura ilustrativa da página de componentes acessíveis"
+  ratio="16:9"
+/>`
+---
+
+<ComponentSection
+  id="media"
+  title="Media"
+  description="Imagens e outras mídias devem preservar contexto. O texto alternativo precisa transmitir a função do conteúdo, não repetir o que já está escrito ao lado."
+  checklistLabel="Checklist de acessibilidade de mídia"
+  checklistItems={[
+    'Use <code>alt</code> significativo para imagens informativas.',
+    'Deixe <code>alt=&quot;&quot;</code> quando a imagem for puramente decorativa.',
+    'Controle proporção e corte para não comprometer conteúdo relevante.',
+  ]}
+>
+  <ExampleDisclosure
+    title="Imagem com proporção fixa e descrição objetiva"
+    summary="Exemplo usando o componente de mídia para manter apresentação consistente em cartões e seções editoriais."
+    code={mediaCode}
+  >
+    <div class="media-demo">
+      <Media
+        src="/home/accessible-components.png"
+        alt="Captura ilustrativa da página de componentes acessíveis com blocos de conteúdo e destaque visual"
+        ratio="16:9"
+      />
+      <p>
+        O componente mantém a proporção visual e permite definir `alt`, `loading` e `decoding` sem duplicar a estrutura
+        do `<img>`.
+      </p>
+    </div>
+
+    <div slot="notes">
+      <p>
+        Se a mesma informação já estiver completamente descrita em texto próximo, considere usar `alt=""` para evitar
+        redundância em leitores de tela.
+      </p>
+    </div>
+  </ExampleDisclosure>
+</ComponentSection>
+
+<style>
+  .media-demo {
+    display: grid;
+    gap: var(--space-s);
+  }
+
+  .media-demo :global(.media-wrapper) {
+    max-inline-size: 42rem;
+  }
+</style>

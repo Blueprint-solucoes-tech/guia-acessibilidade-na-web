@@ -1,0 +1,85 @@
+---
+import Heading from '~/components/core/Heading.astro'
+
+interface Props {
+  id: string
+  title: string
+  description: string
+  checklistLabel: string
+  checklistItems: string[]
+  guidanceTitle?: string
+}
+
+const {
+  id,
+  title,
+  description,
+  checklistLabel,
+  checklistItems,
+  guidanceTitle = 'Boas práticas',
+} = Astro.props
+---
+
+<section id={id} class="component-block space-content">
+  <Heading level="h2">{title}</Heading>
+  <p>{description}</p>
+
+  <div class="component-guidance">
+    <p class="guidance-title">{guidanceTitle}</p>
+    <ul class="component-checklist" aria-label={checklistLabel}>
+      {checklistItems.map((item) => <li set:html={item} />)}
+    </ul>
+  </div>
+
+  <slot />
+</section>
+
+<style>
+  .component-block {
+    scroll-margin-top: 7rem;
+    border-block-end: 1px solid var(--border-color-subtle);
+    padding-block-end: var(--space-2xl);
+  }
+
+  .component-block:last-child {
+    border-block-end: 0;
+    padding-block-end: 0;
+  }
+
+  .component-guidance {
+    border-inline-start: 4px solid var(--link-color);
+    border-radius: 0 var(--radius-s) var(--radius-s) 0;
+    background: light-dark(hsl(210 35% 97%), hsl(215 22% 12%));
+    padding: var(--space-s) var(--space-m);
+  }
+
+  .guidance-title {
+    margin: 0 0 var(--space-2xs);
+    color: var(--link-color);
+    font-size: var(--font-size--1);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .component-checklist {
+    display: grid;
+    gap: var(--space-3xs);
+    margin: 0;
+    padding-inline-start: 1.25rem;
+  }
+
+  .component-checklist li::marker {
+    color: var(--link-color);
+  }
+
+  .component-checklist :global(code) {
+    border: 1px solid color-mix(in srgb, var(--link-color) 30%, transparent);
+    border-radius: var(--radius-xs);
+    background: light-dark(hsl(210 40% 96%), hsl(215 24% 18%));
+    padding: 0.1rem 0.35rem;
+    color: inherit;
+    font-family: var(--font-body);
+    font-size: 0.95em;
+  }
+</style>

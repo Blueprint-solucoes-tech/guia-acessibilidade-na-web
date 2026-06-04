@@ -1,0 +1,106 @@
+---
+import ComponentSection from './ComponentSection.astro'
+import ExampleDisclosure from '~/components/ui/ExampleDisclosure.astro'
+
+const buttonCode = String.raw`<div role="group" aria-label="Ações de exemplo">
+  <button type="button">Salvar alterações</button>
+  <button type="button">Salvar rascunho</button>
+  <button type="button">Excluir item</button>
+</div>`
+---
+
+<ComponentSection
+  id="button"
+  title="Button"
+  description="Botões devem comunicar ação imediata, manter foco visível e usar o elemento nativo correto para evitar comportamento inesperado em teclado e leitores de tela."
+  checklistLabel="Checklist de acessibilidade do botão"
+  checklistItems={[
+    'Use <code>&lt;button&gt;</code> para ações e <code>&lt;a&gt;</code> apenas para navegação.',
+    'Garanta estado de foco visível e alvo clicável confortável.',
+    'O texto do botão deve indicar claramente o resultado da ação.',
+  ]}
+>
+  <ExampleDisclosure
+    title="Ações primária, secundária e destrutiva"
+    summary="Um conjunto simples de botões nativos com rótulos claros e hierarquia visual."
+    code={buttonCode}
+  >
+    <div class="button-showcase">
+      <p class="demo-caption">Exemplo de barra de ações em uma tela de edição.</p>
+      <div class="sample-actions" role="group" aria-label="Ações de exemplo">
+        <button type="button" class="demo-button demo-button-primary">Salvar alterações</button>
+        <button type="button" class="demo-button demo-button-secondary">Salvar rascunho</button>
+        <button type="button" class="demo-button demo-button-danger">Excluir item</button>
+      </div>
+    </div>
+
+    <div slot="notes">
+      <p>
+        Use o atributo `type="button"` quando o botão estiver fora de um envio de formulário. Isso evita submissões
+        acidentais.
+      </p>
+    </div>
+  </ExampleDisclosure>
+</ComponentSection>
+
+<style>
+  .button-showcase,
+  .sample-actions {
+    display: grid;
+    gap: var(--space-s);
+  }
+
+  .sample-actions {
+    grid-template-columns: repeat(auto-fit, minmax(12rem, max-content));
+    align-items: start;
+  }
+
+  .button-showcase {
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-s);
+    background: light-dark(hsl(0 0% 100%), hsl(215 24% 18%));
+    padding: var(--space-m);
+  }
+
+  .demo-caption {
+    margin: 0;
+    color: light-dark(hsl(215 18% 30%), hsl(215 15% 78%));
+    font-size: var(--font-size--1);
+  }
+
+  .demo-button {
+    border: 2px solid transparent;
+    border-radius: var(--radius-s);
+    padding: 0.75rem 1rem;
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+
+  .demo-button:where(:hover, :focus-visible) {
+    text-decoration-color: currentColor;
+  }
+
+  .demo-button:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+  }
+
+  .demo-button-primary {
+    background: hsl(177deg 82% 62%);
+    color: hsl(214deg 85% 8%);
+  }
+
+  .demo-button-secondary {
+    border-color: var(--border-color-subtle);
+    background: transparent;
+    color: inherit;
+  }
+
+  .demo-button-danger {
+    background: hsl(7deg 70% 55%);
+    color: hsl(0deg 0% 100%);
+  }
+</style>

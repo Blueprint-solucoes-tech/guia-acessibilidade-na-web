@@ -1,0 +1,63 @@
+---
+import Link from '~/components/core/Link.astro'
+import ComponentSection from './ComponentSection.astro'
+import ExampleDisclosure from '~/components/ui/ExampleDisclosure.astro'
+
+const linkCode = String.raw`<Link href="/accessibility-statement">declaração de acessibilidade</Link>
+
+<Link
+  href="https://www.w3.org/WAI/"
+  isExternal
+  ariaLabel="W3C WAI, abre em uma nova aba"
+>
+  documentação da W3C WAI
+</Link>`
+---
+
+<ComponentSection
+  id="link"
+  title="Link"
+  description="Links precisam descrever o destino com clareza e manter distinção visual suficiente para quem navega por leitura, teclado ou leitor de tela."
+  checklistLabel="Checklist de acessibilidade de links"
+  checklistItems={[
+    'Evite rótulos genéricos como “clique aqui”.',
+    'Identifique quando o link abre nova aba ou sai do contexto.',
+    'Não use link para disparar ações que deveriam ser botão.',
+  ]}
+>
+  <ExampleDisclosure
+    title="Links internos, externos e link com aparência de botão"
+    summary="Exemplo com diferentes intenções de navegação usando o componente existente do projeto."
+    code={linkCode}
+  >
+    <div class="link-demo">
+      <p>
+        Consulte a página de <Link href="/accessibility-statement">declaração de acessibilidade</Link> para entender
+        compromissos e limitações atuais do projeto.
+      </p>
+      <p>
+        Para aprofundar a referência técnica, veja a
+        <Link href="https://www.w3.org/WAI/" isExternal ariaLabel="W3C WAI, abre em uma nova aba">
+          documentação da W3C WAI
+        </Link>.
+      </p>
+      <Link href="/blog" isButton type="primary" animateOnHover animationType="nudge">
+        Ver artigos relacionados
+      </Link>
+    </div>
+
+    <div slot="notes">
+      <p>
+        Quando um link externo abre nova aba, vale informar isso no rótulo acessível, principalmente se a ação puder
+        surpreender a pessoa.
+      </p>
+    </div>
+  </ExampleDisclosure>
+</ComponentSection>
+
+<style>
+  .link-demo {
+    display: grid;
+    gap: var(--space-s);
+  }
+</style>

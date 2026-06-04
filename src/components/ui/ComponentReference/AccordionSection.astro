@@ -1,0 +1,218 @@
+---
+import Accordion from '~/components/core/Accordion/Accordion.astro'
+import AccordionItem from '~/components/core/Accordion/AccordionItem.astro'
+import Heading from '~/components/core/Heading.astro'
+import Link from '~/components/core/Link.astro'
+import ComponentSection from './ComponentSection.astro'
+import ExampleDisclosure from '~/components/ui/ExampleDisclosure.astro'
+
+const accordionCode = String.raw`<Accordion aria-label="Exemplo de accordion acessível">
+  <AccordionItem name="components-default" title="First Item" open>
+    <p>Este item começa expandido para apresentar o comportamento padrão.</p>
+  </AccordionItem>
+  <AccordionItem name="components-default" title="Second Item">
+    <p>Todos os itens podem ser acessados com teclado.</p>
+  </AccordionItem>
+</Accordion>`
+
+const comparisonCode = String.raw`<!-- Evite -->
+<div onclick="togglePanel()">Perguntas frequentes</div>
+
+<!-- Prefira -->
+<details>
+  <summary>Perguntas frequentes</summary>
+  <p>Conteúdo da seção.</p>
+</details>`
+---
+
+<ComponentSection
+  id="accordion"
+  title="Accordion"
+  description="O Accordion ajuda a organizar conteúdo extenso em blocos compactos sem perder contexto para leitores de tela e usuários de teclado."
+  checklistLabel="Checklist de acessibilidade do accordion"
+  checklistItems={[
+    'Use um rótulo claro no gatilho de expansão.',
+    'Preserve a ordem de navegação por teclado.',
+    'Evite esconder conteúdo essencial sem contexto.',
+  ]}
+>
+  <div class="component-reference" aria-label="Referência técnica do accordion">
+    <div class="reference-card">
+      <Heading level="h3" size="h6">Quando usar</Heading>
+      <p>Quando a página precisa revelar conteúdo complementar sem interromper o fluxo principal de leitura.</p>
+    </div>
+    <div class="reference-card">
+      <Heading level="h3" size="h6">Quando não usar</Heading>
+      <p>Quando a pessoa precisa comparar várias respostas ao mesmo tempo ou o conteúdo é essencial para a tarefa.</p>
+    </div>
+    <div class="reference-card">
+      <Heading level="h3" size="h6">Erros comuns</Heading>
+      <p>Usar gatilhos vagos, esconder instruções críticas e trocar controles nativos por divs com ARIA improvisado.</p>
+    </div>
+    <div class="reference-card">
+      <Heading level="h3" size="h6">Teclado</Heading>
+      <p>O gatilho precisa ser focável, responder a Enter e Space e preservar ordem de tabulação previsível.</p>
+    </div>
+    <div class="reference-card">
+      <Heading level="h3" size="h6">Leitor de tela</Heading>
+      <p>O estado expandido precisa ser comunicado corretamente e o rótulo do gatilho deve indicar o conteúdo.</p>
+    </div>
+    <div class="reference-card">
+      <Heading level="h3" size="h6">WCAG relacionada</Heading>
+      <p>1.3.1 Info and Relationships, 2.1.1 Keyboard, 2.4.3 Focus Order e 4.1.2 Name, Role, Value.</p>
+    </div>
+  </div>
+
+  <ExampleDisclosure
+    open
+    title="Accordion padrão com item inicial aberto"
+    summary="Exemplo com múltiplas seções e suporte nativo para teclado usando o padrão do projeto."
+    code={accordionCode}
+  >
+    <Accordion aria-label="Exemplo de accordion acessível">
+      <AccordionItem name="components-default" title="First Item" open>
+        <p>
+          Este item começa expandido para apresentar o comportamento padrão do componente com estrutura semântica.
+        </p>
+      </AccordionItem>
+      <AccordionItem name="components-default" title="Second Item">
+        <p>Todos os itens podem ser acessados com teclado e oferecem estados visuais claros de foco e hover.</p>
+      </AccordionItem>
+      <AccordionItem name="components-default" title="Third Item">
+        <p>Use headings corretos e textos objetivos para facilitar leitura, navegação e escaneabilidade.</p>
+      </AccordionItem>
+      <AccordionItem name="components-default" title="Fourth Item">
+        <p>Combine o Accordion com landmarks e links internos quando a página tiver muitos exemplos.</p>
+      </AccordionItem>
+    </Accordion>
+
+    <div slot="notes">
+      <p>
+        Prefira usar <code>details</code> e <code>summary</code> quando o padrão atender sua necessidade. Isso reduz
+        JavaScript e já fornece estados expandidos/recolhidos com boa semântica.
+      </p>
+    </div>
+  </ExampleDisclosure>
+
+  <ExampleDisclosure
+    title="Correto vs. incorreto"
+    summary="Comparação curta entre um accordion com semântica nativa e uma implementação frágil comum em código gerado por IA."
+    code={comparisonCode}
+  >
+    <div class="comparison-grid" role="list" aria-label="Comparação entre implementação incorreta e correta">
+      <article class="comparison-card comparison-card-danger" role="listitem">
+        <Heading level="h3" size="h6">Implementação incorreta</Heading>
+        <p>Usa uma <code>div</code> clicável, sem foco por teclado, sem estado expandido e sem relação clara com o conteúdo.</p>
+        <ul class="component-checklist" aria-label="Problemas da implementação incorreta">
+          <li>Não responde bem a teclado.</li>
+          <li>Exige ARIA manual para compensar semântica ausente.</li>
+          <li>Costuma quebrar em leitores de tela e manutenção.</li>
+        </ul>
+      </article>
+      <article class="comparison-card comparison-card-success" role="listitem">
+        <Heading level="h3" size="h6">Implementação recomendada</Heading>
+        <p>Usa <code>details</code> e <code>summary</code> ou um botão nativo com relacionamento claro com o painel.</p>
+        <ul class="component-checklist" aria-label="Benefícios da implementação recomendada">
+          <li>Entrega foco, teclado e estado expandido com menos código.</li>
+          <li>Fica mais previsível para tecnologias assistivas.</li>
+          <li>Reduz risco de regressão ao evoluir o componente.</li>
+        </ul>
+      </article>
+    </div>
+
+    <div slot="notes">
+      <p>
+        Esse tipo de comparação é útil para revisar snippets gerados por IA, que frequentemente resolvem o layout sem
+        garantir o comportamento acessível.
+      </p>
+    </div>
+  </ExampleDisclosure>
+
+  <div class="component-guidance">
+    <p class="guidance-title">Checklist de teste</p>
+    <ul class="component-checklist" aria-label="Checklist de teste do accordion">
+      <li>Tab navega por todos os gatilhos sem prender foco.</li>
+      <li>Enter e Space expandem e recolhem o item esperado.</li>
+      <li>O título do gatilho continua compreensível fora do contexto visual.</li>
+      <li>Leitor de tela anuncia o estado expandido e o rótulo corretamente.</li>
+      <li>O conteúdo aberto mantém ordem lógica de leitura e foco.</li>
+    </ul>
+  </div>
+  <p class="component-related">
+    Para aprofundar a revisão de código com IA, leia o artigo
+    <Link href="/blog/revisao-de-acessibilidade-para-codigo-gerado-por-ia">revisão de acessibilidade para código gerado por IA</Link>.
+  </p>
+</ComponentSection>
+
+<style>
+  .component-reference,
+  .comparison-grid {
+    display: grid;
+    gap: var(--space-s);
+  }
+
+  .reference-card,
+  .comparison-card {
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-s);
+    background: light-dark(hsl(210 25% 98%), hsl(215 18% 10%));
+    padding: var(--space-s);
+  }
+
+  .comparison-card-danger {
+    border-color: light-dark(hsl(4 70% 55%), hsl(4 70% 45%));
+  }
+
+  .comparison-card-success {
+    border-color: light-dark(hsl(155 70% 35%), hsl(155 70% 40%));
+  }
+
+  .component-guidance {
+    border-inline-start: 4px solid var(--link-color);
+    border-radius: 0 var(--radius-s) var(--radius-s) 0;
+    background: light-dark(hsl(210 35% 97%), hsl(215 22% 12%));
+    padding: var(--space-s) var(--space-m);
+  }
+
+  .guidance-title {
+    margin: 0 0 var(--space-2xs);
+    color: var(--link-color);
+    font-size: var(--font-size--1);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .component-checklist {
+    display: grid;
+    gap: var(--space-3xs);
+    margin: 0;
+    padding-inline-start: 1.25rem;
+  }
+
+  .component-checklist li::marker {
+    color: var(--link-color);
+  }
+
+  .component-related {
+    display: grid;
+    gap: var(--space-s);
+    font-family: var(--font-body);
+  }
+
+  code {
+    border: 1px solid color-mix(in srgb, var(--link-color) 30%, transparent);
+    border-radius: var(--radius-xs);
+    background: light-dark(hsl(210 40% 96%), hsl(215 24% 18%));
+    padding: 0.1rem 0.35rem;
+    color: inherit;
+    font-size: 0.95em;
+  }
+
+  @media (width >= 64rem) {
+    .component-reference,
+    .comparison-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

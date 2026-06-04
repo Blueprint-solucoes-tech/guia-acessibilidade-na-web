@@ -1,0 +1,79 @@
+---
+import Heading from '~/components/core/Heading.astro'
+import Link from '~/components/core/Link.astro'
+import ComponentSection from './ComponentSection.astro'
+import ExampleDisclosure from '~/components/ui/ExampleDisclosure.astro'
+
+const cardCode = String.raw`<article aria-labelledby="card-example-title">
+  <p>Checklist</p>
+  <h3 id="card-example-title">Revisão manual antes do deploy</h3>
+  <p>Verifique teclado, foco, nomes acessíveis e contraste.</p>
+  <a href="/ferramentas/checklist-a11y">
+    Abrir checklist de revisão de acessibilidade
+  </a>
+</article>`
+---
+
+<ComponentSection
+  id="card"
+  title="Card"
+  description="Cards agrupam conteúdo relacionado para escaneabilidade. A estrutura semântica precisa continuar clara mesmo quando o layout visual parece independente."
+  checklistLabel="Checklist de acessibilidade de cards"
+  checklistItems={[
+    'Use heading para nomear o conteúdo principal do card.',
+    'Faça links e botões terem rótulos específicos, não apenas “ver mais”.',
+    'Não transforme o card inteiro em área clicável se isso esconder foco ou destino.',
+  ]}
+>
+  <ExampleDisclosure
+    title="Card editorial com heading e link específico"
+    summary="Exemplo de card com conteúdo agrupado, hierarquia semântica e destino de navegação claro."
+    code={cardCode}
+  >
+    <div class="card-demo">
+      <article class="demo-card" aria-labelledby="card-example-title">
+        <p class="demo-card-kicker">Checklist</p>
+        <Heading id="card-example-title" level="h3" size="h5">Revisão manual antes do deploy</Heading>
+        <p>Verifique teclado, foco, nomes acessíveis e contraste antes de tratar a interface como pronta.</p>
+        <Link href="/ferramentas/checklist-a11y">Abrir checklist de revisão de acessibilidade</Link>
+      </article>
+    </div>
+
+    <div slot="notes">
+      <p>
+        Um card pode conter um link principal, mas o foco precisa aparecer no elemento acionável real. Isso mantém o
+        destino claro para teclado e leitor de tela.
+      </p>
+    </div>
+  </ExampleDisclosure>
+</ComponentSection>
+
+<style>
+  .card-demo {
+    display: grid;
+    gap: var(--space-s);
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-s);
+    background: light-dark(hsl(0 0% 100%), hsl(215 24% 18%));
+    padding: var(--space-m);
+  }
+
+  .demo-card {
+    display: grid;
+    gap: var(--space-xs);
+    max-inline-size: 34rem;
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-s);
+    background: light-dark(hsl(210 40% 98%), hsl(215 22% 14%));
+    padding: var(--space-m);
+  }
+
+  .demo-card-kicker {
+    margin: 0;
+    color: var(--link-color);
+    font-size: var(--font-size--1);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+</style>

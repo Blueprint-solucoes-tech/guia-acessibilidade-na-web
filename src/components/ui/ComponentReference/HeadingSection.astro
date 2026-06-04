@@ -1,0 +1,51 @@
+---
+import Heading from '~/components/core/Heading.astro'
+import ComponentSection from './ComponentSection.astro'
+import ExampleDisclosure from '~/components/ui/ExampleDisclosure.astro'
+
+const headingCode = String.raw`<Heading level="h2" size="h2">Guia de componentes acessíveis</Heading>
+<p>Introdução da seção.</p>
+
+<Heading level="h3" size="h4">Estrutura semântica</Heading>
+<p>Subseção com hierarquia correta.</p>`
+---
+
+<ComponentSection
+  id="heading"
+  title="Heading"
+  description="Títulos organizam a página para leitura visual e navegação assistiva. A hierarquia semântica importa mais do que o tamanho visual isolado."
+  checklistLabel="Checklist de acessibilidade de headings"
+  checklistItems={[
+    'Não pule níveis sem motivo estrutural.',
+    'Use o heading para resumir a próxima seção.',
+    'Separar nível semântico de tamanho visual pode ser útil, mas com critério.',
+  ]}
+>
+  <ExampleDisclosure
+    title="Hierarquia com tamanhos visuais controlados"
+    summary="Exemplo mostrando como o componente permite manter semântica consistente e ajustar aparência."
+    code={headingCode}
+  >
+    <div class="heading-demo">
+      <Heading level="h2" size="h2">Guia de componentes acessíveis</Heading>
+      <p>Introdução da seção com uma visão geral curta antes de entrar em subtópicos.</p>
+
+      <Heading level="h3" size="h4">Estrutura semântica</Heading>
+      <p>Um subtítulo pode parecer menor visualmente sem perder seu papel na navegação do documento.</p>
+
+      <Heading level="h3" size="h5">Foco em escaneabilidade</Heading>
+      <p>Títulos curtos e objetivos ajudam tanto na leitura rápida quanto no uso de leitores de tela.</p>
+    </div>
+
+    <div slot="notes">
+      <p>Evite usar heading apenas para estilizar texto. Se não for um título de seção, provavelmente não deve ser heading.</p>
+    </div>
+  </ExampleDisclosure>
+</ComponentSection>
+
+<style>
+  .heading-demo {
+    display: grid;
+    gap: var(--space-s);
+  }
+</style>
