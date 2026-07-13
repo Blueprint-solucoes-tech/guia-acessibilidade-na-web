@@ -14,6 +14,8 @@ O objetivo deste repositório é ser uma referência prática para:
 - landing page com posicionamento do projeto
 - página de componentes acessíveis com exemplos práticos
 - blog com artigos editoriais conectados ao tema
+- verificador de contraste com lógica testada
+- checklist de revisão a11y para apoio manual
 - declaração de acessibilidade do próprio site
 
 ## O que este projeto não tenta ser
@@ -68,7 +70,12 @@ src/
     blog.astro
     blog/
       [slug].astro
+    ferramentas/
+      contraste.astro
+      checklist-a11y.astro
     accessibility-statement.astro
+  lib/
+    contrast.ts
   content.config.ts
 ```
 

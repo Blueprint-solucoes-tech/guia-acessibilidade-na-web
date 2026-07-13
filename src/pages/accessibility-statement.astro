@@ -3,14 +3,14 @@ import DefaultLayout from '~/layouts/DefaultLayout.astro'
 import PageHeader from '~/components/ui/PageHeader.astro'
 import Heading from '~/components/core/Heading.astro'
 import Link from '~/components/core/Link.astro'
-import Icon from 'node_modules/astro-icon/components/Icon.astro'
+import { Icon } from 'astro-icon/components'
 ---
 
 <DefaultLayout title="Declaração de Acessibilidade">
   <section class="my-12">
     <PageHeader
       title="Declaração de Acessibilidade"
-      subtitle="Este documento descreve as práticas e recursos de acessibilidade adotados neste site. Recomendamos que as informações sejam revisadas e ajustadas conforme as características específicas da sua aplicação, tendo como referência as Diretrizes de Acessibilidade para Conteúdo Web (WCAG) 2.2, nível AA."
+      subtitle="Este documento descreve as práticas de acessibilidade adotadas neste site, as validações conhecidas e os pontos que ainda precisam de revisão contínua."
       bgType="bordered"
     />
   </section>
@@ -18,56 +18,50 @@ import Icon from 'node_modules/astro-icon/components/Icon.astro'
     <div class="space-content">
       <Heading level={'h2'}>Introdução</Heading>
       <p>
-        Esta declaração de acessibilidade aplica-se ao site <strong>Guia acessibilidade na web</strong>. No <strong
-          >Guia de acessibilidade</strong
-        >, estamos comprometidos em garantir a acessibilidade digital para pessoas com diferentes habilidades e
-        necessidades. Acreditamos que todas as pessoas devem ter acesso igualitário à informação e às funcionalidades da
-        web, independentemente de limitações físicas, sensoriais, cognitivas ou tecnológicas. A acessibilidade é um
-        valor fundamental no nosso compromisso com a criação de uma experiência digital inclusiva, utilizável e
-        respeitosa.
+        Esta declaração se aplica ao site <strong>Guia Acessibilidade na Web</strong>. O projeto tem acessibilidade
+        como critério central de produto e busca manter suas páginas, exemplos e ferramentas revisáveis por teclado,
+        semântica, foco, contraste, conteúdo e uso adequado de ARIA.
       </p>
       <Heading level={'h2'}>Conformidade com as WCAG</Heading>
       <p>
-        Este site foi desenvolvido com o objetivo de estar em conformidade com as Diretrizes de Acessibilidade para
-        Conteúdo Web (WCAG) 2.2, no nível AA. Essas diretrizes explicam como tornar o conteúdo web mais acessível a
-        pessoas com diferentes tipos de deficiência, incluindo deficiências visuais, auditivas, motoras, cognitivas, de
-        fala, de linguagem, de aprendizagem e neurológicas.
+        O site usa as Diretrizes de Acessibilidade para Conteúdo Web (WCAG) 2.2 como referência, com foco prático no
+        nível AA. No momento, esta página não declara conformidade plena ou certificação formal. A acessibilidade deve
+        ser validada continuamente a cada mudança relevante de conteúdo, navegação, componente ou ferramenta.
       </p>
       <Heading level={'h2'}>Status atual de acessibilidade</Heading>
       <p>
-        Este site passou por uma avaliação interna de acessibilidade. Até o momento, foram implementadas as seguintes
-        práticas e recursos:
+        Até o momento, o projeto adota as seguintes práticas e recursos:
       </p>
       <ul class="list-inside list-disc">
-        <li>Uso correto do atributo de idioma (lang) no HTML, favorecendo leitores de tela e tecnologias assistivas</li>
-        <li>Navegação completa por teclado em todos os elementos interativos</li>
-        <li>Contraste de cores adequado para textos e elementos visuais</li>
-        <li>Design responsivo, compatível com diferentes dispositivos e tamanhos de tela</li>
-        <li>Textos alternativos para conteúdos não textuais, como imagens e ícones</li>
-        <li>Uso de atributos ARIA apenas quando necessário, para complementar a semântica nativa</li>
-        <li>Links de atalho para pular conteúdos repetitivos (skip links)</li>
+        <li>Idioma principal definido como português do Brasil no documento HTML.</li>
+        <li>Landmarks estruturais para navegação, conteúdo principal e rodapé.</li>
+        <li>Link de atalho para pular para o conteúdo principal.</li>
+        <li>Preferência por HTML semântico antes de ARIA nos componentes documentados.</li>
+        <li>Ferramenta de contraste com lógica testada para cálculo de taxa e status AA/AAA.</li>
+        <li>Checklist de revisão manual para semântica, teclado, foco, formulários, ARIA, conteúdo e contraste.</li>
       </ul>
       <Heading level={'h2'}>Áreas para melhoria</Heading>
       <p>
-        Reconhecemos que a acessibilidade é um processo contínuo. Algumas áreas ainda podem ser aprimoradas, como
-        [descrever funcionalidades, componentes ou páginas específicas, se aplicável]. Essas melhorias já fazem parte do
-        nosso plano de evolução do site.
+        A acessibilidade deste site ainda precisa de revisões recorrentes. As próximas melhorias incluem registrar
+        validações manuais por página, expandir os checklists de teste por componente, revisar navegação por teclado em
+        todos os menus e manter a documentação alinhada ao que já foi realmente verificado.
       </p>
       <Heading level={'h2'}>Feedback e contato</Heading>
       <p>
-        Valorizamos o feedback dos usuários sobre a acessibilidade deste site. Caso você encontre alguma barreira ou
-        tenha sugestões de melhoria, pedimos que, se possível, informe:
+        Caso você encontre uma barreira de acessibilidade ou tenha sugestão de melhoria, abra uma issue no GitHub com a
+        página afetada, o navegador usado, a tecnologia assistiva envolvida quando houver e uma descrição curta do
+        problema.
       </p>
       <Link
-          href="https://github.com/Gabrielbsb21/guia-acessibilidade-na-web/issues"
-          isButton
-          type="primary"
-          animateOnHover
-          animationType="boop"
-        >
-          <Icon aria-hidden="true" name="lucide:headset" size=" 1.5rem" />
-          Problemas? abre uma issue no GitHub
-        </Link>
+        href="https://github.com/Gabrielbsb21/guia-acessibilidade-na-web/issues"
+        isButton
+        type="primary"
+        animateOnHover
+        animationType="boop"
+      >
+        <Icon aria-hidden="true" name="lucide:headset" size="1.5rem" />
+        Abrir issue no GitHub
+      </Link>
     </div>
   </section>
 </DefaultLayout>
